@@ -8,7 +8,8 @@ var gameState = {
     preload: function() {
         // Para carregar um sprite simples, basta dar um nome ao mesmo e dizer qual é o arquivo
         this.game.load.image('alien', 'assets/sprites/alien1.png'); //jogador 
-        this.game.load.image('platform', 'assets/sprites/platform.png'); //plataforma
+        this.game.load.image('platform', 'assets/sprites/platform.png'); //plataforma        
+        this.game.load.image('asteroid', 'assets/sprites/asteroid.png'); //plataforma
         
         // Para carregar um spritesheet, são necessários parâmetros adicionais além do nome e arquivo
         // é preciso também a largura e altura de cada sprite, e quantos sprites existem no spritesheet
@@ -55,10 +56,17 @@ var gameState = {
         this.keys = this.game.input.keyboard.createCursorKeys();
         // A função abaixo captura apenas uma tecla e a associa à variável jumpButton
         // this.jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR); 
+        
+        //Chama a função que cria os meteoros
+        this.asteroidGenerator = this.game.time.events.loop(2500, this.lateralShoots, this);
     },
 
     // update: o que fazer a cada quadro
     update: function() {
+        // Adicionalmente, a função this.groundCollision() é chamada no evento da colisão
+        this.game.physics.arcade.collide(this.player, this.asteroid, this.groundCollision, null, this);
+        
+        
         // Movimentando jogador        
         // Se a tecla esquerda estiver pressionada (this.keys.left.isDown == true),
         // mover o sprite para a esquerda
@@ -109,7 +117,7 @@ var gameState = {
                 this.player.animations.stop();
                 this.player.frame = 9;
             }
-        }
+        }   
 
      },
     
@@ -120,9 +128,40 @@ var gameState = {
         }
     },
     
-    groundCollision : function(){
-        // Essa função é chamada se o jogador colidir com o chão
-        // Faz o jogo avançar para o state 'gameover'
-        this.game.state.start('gameover');
+    lateralShoots: function(){
+        // Cria os tiros que vem pelas laterais da tela em direção ao jogador
+        var side = game.rnd.integerInRange(0, 3);
+        if (side == 0){         //top            
+            this.asteroid = this.game.add.sprite(game.rnd.integerInRange(200, 600), 0, 'asteroid');
+            this.asteroid.anchor.setTo(0.5, 0.5);
+            this.game.physics.enable(this.asteroid);
+            this.asteroid.angle = game.rnd.integerInRange(135, 225);            
+            this.game.physics.arcade.velocityFromRotation(this.asteroid.rotation-Math.PI/2, game.rnd.integerInRange(150, 350), this.asteroid.body.velocity);
+        }     
+        else if (side == 1){         //right            
+            this.asteroid = this.game.add.sprite(800, game.rnd.integerInRange(200, 400), 'asteroid');
+            this.asteroid.anchor.setTo(0.5, 0.5);
+            this.game.physics.enable(this.asteroid);
+            this.asteroid.angle = game.rnd.integerInRange(225, 315);            
+            this.game.physics.arcade.velocityFromRotation(this.asteroid.rotation-Math.PI/2, game.rnd.integerInRange(150, 350), this.asteroid.body.velocity);
+        }
+        else if (side == 2){         //bottom            
+            this.asteroid = this.game.add.sprite(game.rnd.integerInRange(200, 600), 600, 'asteroid');
+            this.asteroid.anchor.setTo(0.5, 0.5);
+            this.game.physics.enable(this.asteroid);
+            this.asteroid.angle = game.rnd.integerInRange(0, 45) + game.rnd.integerInRange(0, 45);            
+            this.game.physics.arcade.velocityFromRotation(this.asteroid.rotation-Math.PI/2, game.rnd.integerInRange(150, 350), this.asteroid.body.velocity);
+        }  
+        else if (side == 3){         //left            
+            this.asteroid = this.game.add.sprite(0, game.rnd.integerInRange(200, 400), 'asteroid');
+            this.asteroid.anchor.setTo(0.5, 0.5);
+            this.game.physics.enable(this.asteroid);
+            this.asteroid.angle = game.rnd.integerInRange(45, 135);            
+            this.game.physics.arcade.velocityFromRotation(this.asteroid.rotation-Math.PI/2, game.rnd.integerInRange(150, 350), this.asteroid.body.velocity);
+        }
     },
+    
+    groundCollision : function(){
+        this.game.state.start('gameover');
+    }
 }
