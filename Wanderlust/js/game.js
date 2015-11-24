@@ -65,7 +65,7 @@ var gameState = {
         // this.jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR); 
         
         //Chama a função que cria os meteoros
-        this.asteroidGenerator = this.game.time.events.loop(2500, this.lateralShoots, this);
+        this.asteroidGenerator = this.game.time.events.loop(4000, this.lateralShoots, this);
     },
 
     // update: o que fazer a cada quadro
@@ -102,7 +102,7 @@ var gameState = {
         //    }
         }
         this.aliens.forEachAlive(function(alien) {
-            this.game.physics.arcade.accelerateToObject(alien, this.player, 60);}, this);
+            this.game.physics.arcade.accelerateToObject(alien, this.player, 600, 120, 120);}, this);
         
         this.oxygen-=0.1;
         console.log('Oxygen', this.oxygen);
@@ -153,8 +153,9 @@ var gameState = {
         if (this.oxygen > 100){
             this.oxygen = 100;
         }
-        this.capsule = this.game.add.sprite(this.game.world.randomX, this.game.world.randomY, 'capsule');
-        this.alien = this.aliens.create(this.game.world.randomX, this.game.world.randomY, 'alien');
+        this.capsule = this.game.add.sprite(game.rnd.integerInRange(100, 680), game.rnd.integerInRange(100, 450), 'capsule');
+        this.alien = this.aliens.create(game.rnd.integerInRange(150, 650), game.rnd.integerInRange(150, 550), 'alien');
+        this.alien.body.collideWorldBounds = true;
         this.game.physics.enable(this.capsule);
         console.log('Score:', this.score);
         
