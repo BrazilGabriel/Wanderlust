@@ -8,8 +8,9 @@ var gameState = {
     preload: function() {
         // Para carregar um sprite simples, basta dar um nome ao mesmo e dizer qual é o arquivo
         this.game.load.image('asteroid', 'assets/sprites/asteroid.png'); //plataforma
-        this.game.load.image('capsule', 'assets/sprites/795.jpg');
-        this.game.load.image('alien', 'assets/sprites/alien.gif');
+        this.game.load.image('capsule', 'assets/sprites/ox.png');
+        this.game.load.image('alien', 'assets/sprites/alien.png');
+        this.game.load.image('bg', 'assets/back.gif');
         
         // Para carregar um spritesheet, são necessários parâmetros adicionais além do nome e arquivo
         // é preciso também a largura e altura de cada sprite, e quantos sprites existem no spritesheet
@@ -22,7 +23,7 @@ var gameState = {
         // Redimensionando o "mundo", ou seja, o tamanho efetivo da scene, que pode ser maior do que o tamanho do canvas
         // Desta forma podemos ter fases bem maiores do que o canvas mostra, e uma "câmera" mostra a porção relevante do mundo
         this.game.world.resize(800, 600);
-        
+        this.game.add.sprite(0,0, 'bg');
         
         // Inicializando sistema de física
         // o sistema Arcade é o mais simples de todos, mas também é o mais eficiente em termos de processamento.
@@ -33,7 +34,7 @@ var gameState = {
         this.score = 0;
         
         // Cor de fundo - #0082bc é um tom de azul
-        this.game.stage.backgroundColor = '#0082bc';
+        //this.game.stage.backgroundColor = '#0082bc';
 
         // Inicializando jogador  
         this.currentSpeed = 0;
