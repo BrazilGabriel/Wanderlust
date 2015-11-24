@@ -7,9 +7,9 @@ var gameState = {
     // preload: carregar todos os assets necessários para esta scene ou para as próximas
     preload: function() {
         // Para carregar um sprite simples, basta dar um nome ao mesmo e dizer qual é o arquivo
-        this.game.load.image('alien', 'assets/sprites/alien1.png'); //jogador 
-        this.game.load.image('platform', 'assets/sprites/platform.png'); //plataforma        
         this.game.load.image('asteroid', 'assets/sprites/asteroid.png'); //plataforma
+        this.game.load.image('capsule', 'assets/sprites/795.jpg');
+        this.game.load.image('alien', 'assets/sprites/alien.gif');
         
         // Para carregar um spritesheet, são necessários parâmetros adicionais além do nome e arquivo
         // é preciso também a largura e altura de cada sprite, e quantos sprites existem no spritesheet
@@ -23,9 +23,14 @@ var gameState = {
         // Desta forma podemos ter fases bem maiores do que o canvas mostra, e uma "câmera" mostra a porção relevante do mundo
         this.game.world.resize(800, 600);
         
+        
         // Inicializando sistema de física
         // o sistema Arcade é o mais simples de todos, mas também é o mais eficiente em termos de processamento.
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
+        
+        //Variáveis de Controle
+        this.oxygen = 100;
+        this.score = 0;
         
         // Cor de fundo - #0082bc é um tom de azul
         this.game.stage.backgroundColor = '#0082bc';
@@ -34,10 +39,16 @@ var gameState = {
         this.currentSpeed = 0;
         // Adicionando o sprite do jogador na posição (400, 300) usando o asset 'player' e sprite 5
         this.player = this.game.add.sprite(400, 500, 'player', 6);
+        this.capsule = this.game.add.sprite(this.game.world.randomX, this.game.world.randomY, 'capsule');        
+        this.aliens = this.game.add.group();
+        this.aliens.enableBody = true;
+        this.aliens.physicsBodyType = Phaser.Physics.ARCADE;
+
         // Ajustando a âncora do objeto (http://phaser.io/docs/2.4.4/Phaser.Sprite.html#anchor)
         this.player.anchor.setTo(0.5, 0.5);
         // Adicionando física ao objeto
         this.game.physics.enable(this.player);
+        this.game.physics.enable(this.capsule);
         // Colidir com os "limites do mundo", ou seja, com os limites definidos em this.game.world.resize()
         // Não gera eventos de colisão, no entanto
         this.player.body.collideWorldBounds = true;
@@ -48,10 +59,6 @@ var gameState = {
         this.player.animations.add('walkr', [1], 6);
         this.player.animations.add('idle', [7,6,8,6], 2);
         this.player.animations.add('jump', [0], 6);
-        
-        
-        // Fazer a câmera do jogo seguir o jogador; o jogador ficará centralizado na tela, na medida do possível
-        this.game.camera.follow(this.player);
         
         this.keys = this.game.input.keyboard.createCursorKeys();
         // A função abaixo captura apenas uma tecla e a associa à variável jumpButton
@@ -65,8 +72,10 @@ var gameState = {
     update: function() {
         // Adicionalmente, a função this.groundCollision() é chamada no evento da colisão
         this.game.physics.arcade.collide(this.player, this.asteroid, this.groundCollision, null, this);
-        
-        
+        this.game.physics.arcade.collide(this.player, this.aliens, this.groundCollision, null, this);
+        this.game.physics.arcade.collide(this.player, this.capsule, this.oxygenCapsule, null, this);   
+        this.game.physics.arcade.collide(this.aliens, this.aliens, this.alienCollision, null, this);
+
         // Movimentando jogador        
         // Se a tecla esquerda estiver pressionada (this.keys.left.isDown == true),
         // mover o sprite para a esquerda
@@ -91,6 +100,15 @@ var gameState = {
         //    if (this.currentSpeed < 0){
         //        this.currentSpeed += 2;
         //    }
+        }
+        this.aliens.forEachAlive(function(alien) {
+            this.game.physics.arcade.accelerateToObject(alien, this.player, 60);}, this);
+        
+        this.oxygen-=0.1;
+        console.log('Oxygen', this.oxygen);
+        
+        if (this.oxygen <= 0){
+            this.groundCollision();
         }
         
         //se o player estiver parado;
@@ -128,6 +146,25 @@ var gameState = {
         }
     },
     
+    oxygenCapsule: function(){
+        this.capsule.kill();
+        this.score+= 50;
+        this.oxygen+= 10;
+        if (this.oxygen > 100){
+            this.oxygen = 100;
+        }
+        this.capsule = this.game.add.sprite(this.game.world.randomX, this.game.world.randomY, 'capsule');
+        this.alien = this.aliens.create(this.game.world.randomX, this.game.world.randomY, 'alien');
+        this.game.physics.enable(this.capsule);
+        console.log('Score:', this.score);
+        
+    },
+    
+    alienCollision: function(){
+        this.alien.kill();
+        this.alien.kill();
+    },
+    
     lateralShoots: function(){
         // Cria os tiros que vem pelas laterais da tela em direção ao jogador
         var side = game.rnd.integerInRange(0, 3);
@@ -163,5 +200,17 @@ var gameState = {
     
     groundCollision : function(){
         this.game.state.start('gameover');
-    }
+    },
+    
+    /*moveAliens : function(alien) { 
+    this.accelerate(this.alien,this.player,60);
+    },
+    
+    accelerate : function(obj1, obj2, speed) {
+        if (typeof speed === 'undefined') { speed = 60; }
+        var angle = Math.atan2(obj2.y - obj1.y, obj2.x - obj1.x);
+        obj1.body.rotation = angle + this.game.math.degToRad(90);  // correct angle of angry bullets (depends on the sprite used)
+        obj1.body.force.x = Math.cos(angle) * speed;   
+        obj1.body.force.y = Math.sin(angle) * speed;
+    }*/
 }
