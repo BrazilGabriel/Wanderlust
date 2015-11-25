@@ -10,21 +10,25 @@ var gameState = {
         this.game.load.image('asteroid', 'assets/sprites/asteroid.png'); //plataforma
         this.game.load.image('capsule', 'assets/sprites/ox.png');
         this.game.load.image('alien', 'assets/sprites/alien.png');
-        this.game.load.image('bg', 'assets/back.gif');
+        this.game.load.image('bg', 'assets/sprites/back.gif');
         
         // Para carregar um spritesheet, são necessários parâmetros adicionais além do nome e arquivo
         // é preciso também a largura e altura de cada sprite, e quantos sprites existem no spritesheet
         // Na chamada abaixo, os sprites possuem 80x80, e existem 8 sprites 
         //tamanho(25/34)
         this.game.load.spritesheet('player', 'assets/sprites/astro.png', 64, 64, 12);
+        this.game.load.spritesheet('back', 'assets/sprites/bg.png', 800, 600, 4);
     },
 
     // create: instanciar e inicializar todos os objetos dessa scene
     create: function() {
         // Redimensionando o "mundo", ou seja, o tamanho efetivo da scene, que pode ser maior do que o tamanho do canvas
         // Desta forma podemos ter fases bem maiores do que o canvas mostra, e uma "câmera" mostra a porção relevante do mundo
-        this.game.world.resize(800, 600);
-        this.game.add.sprite(0,0, 'bg');
+
+        
+        //adicionando o fundo animado
+        this.back = this.game.add.sprite(0,0,'back', 0);
+        this.back.animations.add('on', [0,1,2,3], 7);
         
         // Inicializando sistema de física
         // o sistema Arcade é o mais simples de todos, mas também é o mais eficiente em termos de processamento.
@@ -73,6 +77,8 @@ var gameState = {
 
     // update: o que fazer a cada quadro
     update: function() {
+        //animando o fundo
+        this.back.animations.play('on');
         // Adicionalmente, a função this.groundCollision() é chamada no evento da colisão
         this.game.physics.arcade.collide(this.player, this.asteroid, this.groundCollision, null, this);
         this.game.physics.arcade.collide(this.player, this.aliens, this.groundCollision, null, this);
@@ -164,9 +170,9 @@ var gameState = {
         
     },
     
-    alienCollision: function(){
-        this.alien.kill();
-        this.alien.kill();
+    alienCollision: function(alien1, alien2){
+        alien1.kill();
+        alien2.kill();
     },
     
     lateralShoots: function(){
