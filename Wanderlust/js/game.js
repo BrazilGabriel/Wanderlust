@@ -15,6 +15,7 @@ var gameState = {
         // Para carregar um spritesheet, são necessários parâmetros adicionais além do nome e arquivo
         // é preciso também a largura e altura de cada sprite, e quantos sprites existem no spritesheet
         // Na chamada abaixo, os sprites possuem 80x80, e existem 8 sprites 
+        //tamanho(25/34)
         this.game.load.spritesheet('player', 'assets/sprites/astro.png', 64, 64, 12);
     },
 
@@ -47,6 +48,7 @@ var gameState = {
 
         // Ajustando a âncora do objeto (http://phaser.io/docs/2.4.4/Phaser.Sprite.html#anchor)
         this.player.anchor.setTo(0.5, 0.5);
+        this.player.scale.setTo(0.75,0.75);
         // Adicionando física ao objeto
         this.game.physics.enable(this.player);
         this.game.physics.enable(this.capsule);
