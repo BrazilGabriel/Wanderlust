@@ -5,5 +5,11 @@
 canvas {    
   display: table;
   margin: 0 auto;
-  border: 1px solid black;
+  border-style: groove; 
+  border-color: purple;
+  border-width: 20px;
+  border-radius: 25px
+}
+body{
+    background: linear-gradient(#000000, #190033);
 }
