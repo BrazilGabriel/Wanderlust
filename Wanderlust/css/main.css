@@ -2,14 +2,16 @@
   text-align: center;
 }
 
+body{
+    background: linear-gradient(#000000, #190033);
+}
+
 canvas {    
   display: table;
-  margin: 0 auto;
+  margin: 62 auto;
   border-style: groove; 
   border-color: purple;
   border-width: 20px;
-  border-radius: 25px
-}
-body{
-    background: linear-gradient(#000000, #190033);
+  border-radius: 25px;
+  -webkit-filter: drop-shadow(0px 0px 15px blue);
 }
