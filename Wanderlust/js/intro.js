@@ -43,8 +43,9 @@ var introState = {
         this.game.time.events.loop(4000, this.logoPlay, this);
        
         //adicionando os botões
-        this.buttonplay = this.game.add.sprite(680,380, 'buttonplay', 0);
-        this.buttoncredits = this.game.add.sprite(620,480, 'buttonplay', 1);
+        this.buttonplay = this.game.add.sprite(660,340, 'buttonplay', 0);
+        this.buttonscore = this.game.add.sprite(640,420, 'buttonplay', 0);
+        this.buttoncredits = this.game.add.sprite(620,500, 'buttonplay', 1);
         
         
         
@@ -75,24 +76,27 @@ var introState = {
         if(this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)&&this.game.status==1){
             this.game.state.start('credits');
         }
+        if(this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)&&this.game.status==2){
+            this.game.state.start('credits');
+        }
         //movimentando a máquina de estado
-        else if(this.game.input.keyboard.isDown(Phaser.Keyboard.UP)){
+        if(this.game.input.keyboard.isDown(Phaser.Keyboard.UP)){
             if(this.game.status == 0 && this.change==false){
-                this.game.status = 1;
+                this.game.status = 2;
                 this.change=true;
             }
-            else if(this.game.status == 1 && this.change==false){
-                this.game.status = 0;
+            else if(this.game.status <= 2 && this.change==false){
+                this.game.status -= 1;
                 this.change=true;
             }
         }  
         else if(this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN)){
-            if(this.game.status == 0 && this.change==false){
-                this.game.status = 1;
+            if(this.game.status == 2 && this.change==false){
+                this.game.status = 0;
                 this.change=true;
             }
-            else if(this.game.status == 1 && this.change==false){
-                this.game.status = 0;
+            else if(this.game.status >= 0 && this.change==false){
+                this.game.status += 1;
                 this.change=true;
             }
         }
@@ -102,10 +106,18 @@ var introState = {
         //estado do botão play
         if(this.game.status == 0){
             this.buttonplay.frame=1;
+            this.buttonscore.frame=0;
+            this.buttoncredits.frame=0;
+            
+        }
+        else if(this.game.status == 1){
+            this.buttonplay.frame=0;
+            this.buttonscore.frame=1;
             this.buttoncredits.frame=0;
         }
         else{
             this.buttonplay.frame=0;
+            this.buttonscore.frame=0;
             this.buttoncredits.frame=1;
         }
     },
