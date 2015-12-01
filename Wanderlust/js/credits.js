@@ -37,9 +37,9 @@ var creditsState = {
         this.sub.generateTexture;
     
     
-        this.team = '\nDOUGLAS MATHEUS \n\n\nVIRGINIA OLIVEIRA \n\n\n\nGABRIEL ALONSO \n\n\nGABRIEL BRASIL \n\n\n\nBRUNO ARAUJO \n\nCRISTINA ARAUJO \n\nRAFAEL LIMA \n\n\n\n\n\n\n\n';
-        this.func = '\nConcept\nElements\n\nConcept\nCharacters \n\n\nPhysics \nSound Design \n\nAnimations\nGame UI\n\n\nProgramming\n\nGame Design\n\nConcept Art'   
-        this.class = 'Artists\n\n\n\n\n\n\n\nProgrammers\n\n\n\n\n\n\n\nGuiding Teachers';
+        this.team = '\nDOUGLAS MATHEUS \n\n\nVIRGINIA OLIVEIRA \n\n\n\nGABRIEL ALONSO \n\n\nGABRIEL BRASIL \n\n\n\n\nBRUNO ARAUJO \n\nCRISTINA ARAUJO \n\nRAFAEL LIMA \n\n\n\n\n\n\n\n';
+        this.func = '\nConcept\nElements\n\nConcept\nCharacters \n\n\nPhysics \nSound Design \n\nGame Designer\nAnimations\nGame UI\n \n\nProgramming\n\nGame Design\n\nConcept Art'   
+        this.class = 'Artists\n\n\n\n\n\n\n\nProgrammers\n\n\n\n\n\n\n\n\nGuiding Teachers';
     
         this.text = this.game.add.bitmapText(400, 625, 'fipps', this.team, 18);
         this.text.anchor.setTo(1,0);
