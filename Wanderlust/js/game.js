@@ -9,12 +9,12 @@ var gameState = {
         // Para carregar um sprite simples, basta dar um nome ao mesmo e dizer qual é o arquivo
         this.game.load.image('asteroid', 'assets/sprites/asteroid.png'); //plataforma
         this.game.load.image('capsule', 'assets/sprites/ox.png');
-        this.game.load.image('alien', 'assets/sprites/alien.png');
         
         // Para carregar um spritesheet, são necessários parâmetros adicionais além do nome e arquivo
         // é preciso também a largura e altura de cada sprite, e quantos sprites existem no spritesheet
         // Na chamada abaixo, os sprites possuem 80x80, e existem 8 sprites 
         //tamanho(25/34)
+        this.game.load.spritesheet('alien', 'assets/sprites/alien1.png',70,50, 4);
         this.game.load.spritesheet('player', 'assets/sprites/astro.png', 64, 64, 12);
         this.game.load.spritesheet('back', 'assets/sprites/bg.png', 800, 600, 4);
     },
@@ -48,6 +48,14 @@ var gameState = {
         this.aliens = this.game.add.group();
         this.aliens.enableBody = true;
         this.aliens.physicsBodyType = Phaser.Physics.ARCADE;
+       // this.alien = this.aliens.create(0,0, 'alien');
+        
+      //  this.aliens.create(400, 300, 'alien', 0);
+       // this.box.callAll('animations.add', 'animations', 'idle',[0,0,0,1,2,1], 6, true);
+//this.box.callAll('animations.play', 'animations', 'idle');
+      
+      
+        //this.aliens.animations.add('on',[0,1,2,3,2,1],2);
 
         // Ajustando a âncora do objeto (http://phaser.io/docs/2.4.4/Phaser.Sprite.html#anchor)
         this.player.anchor.setTo(0.5, 0.5);
@@ -76,8 +84,17 @@ var gameState = {
 
     // update: o que fazer a cada quadro
     update: function() {
+        
         //animando o fundo
+        this.aliens.callAll('animations.play', 'animations', 'on');
         this.back.animations.play('on');
+        
+        //if(this.aliens.x<this.player.body.x){
+          //  this.aliens.scale.setTo(-1,1);
+        //}
+        //else{
+    // this.aliens.scale.setTo(1,1);
+    // }
         // Adicionalmente, a função this.groundCollision() é chamada no evento da colisão
         this.game.physics.arcade.collide(this.player, this.asteroid, this.groundCollision, null, this);
         this.game.physics.arcade.collide(this.player, this.aliens, this.groundCollision, null, this);
@@ -98,7 +115,7 @@ var gameState = {
         
         // Se a tecla cima estiver pressionada, aumenta a velocidade do jogador
         else if(this.keys.up.isDown){
-            this.currentSpeed = 300;
+            this.currentSpeed = 250;
         }
         //se não estiver, reduz a velocidade até chegar a zero;
         else {
@@ -110,9 +127,15 @@ var gameState = {
         //    }
         }
         this.aliens.forEachAlive(function(alien) {
-            this.game.physics.arcade.accelerateToObject(alien, this.player, 600, 120, 120);}, this);
-        
-        this.oxygen-=0.1;
+            this.game.physics.arcade.accelerateToObject(alien, this.player, 600, 120, 120);
+            if(alien.body.x>this.player.body.x){
+                alien.scale.setTo(1,1);
+            }
+            else{
+                alien.scale.setTo(-1,1);
+            }
+        }, this);
+        this.oxygen-=0.07;
         console.log('Oxygen', this.oxygen);
         
         if (this.oxygen <= 0){
@@ -163,7 +186,9 @@ var gameState = {
         }
         this.capsule = this.game.add.sprite(game.rnd.integerInRange(100, 680), game.rnd.integerInRange(100, 450), 'capsule');
         this.alien = this.aliens.create(game.rnd.integerInRange(150, 650), game.rnd.integerInRange(150, 550), 'alien');
+        this.aliens.callAll('animations.add', 'animations', 'on',[0,1,2,3,2,1], 6, true);
         this.alien.body.collideWorldBounds = true;
+        this.alien.anchor.setTo(0.5,0.5);
         this.game.physics.enable(this.capsule);
         console.log('Score:', this.score);
         
