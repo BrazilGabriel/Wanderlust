@@ -113,7 +113,7 @@ var gameState = {
         
         // Se a tecla cima estiver pressionada, aumenta a velocidade do jogador
         else if(this.keys.up.isDown){
-            this.currentSpeed = 250;
+            this.currentSpeed = 300;
         }
         //se não estiver, reduz a velocidade até chegar a zero;
         else {
@@ -134,10 +134,10 @@ var gameState = {
             }
         }, this);
         
-        currentOxygen-=0.05;
-        console.log('Oxygen:', currentOxygen);
+        this.currentOxygen-=0.05;
+        console.log('Oxygen:', this.currentOxygen);
         
-        if (currentOxygen <= 0){
+        if (this.currentOxygen <= 0){
             groundCollision();
         }
         
@@ -178,10 +178,10 @@ var gameState = {
     
     oxygenCapsule: function(){
         this.capsule.kill();
-        currentScore+= 50;
-        currentOxygen+= 10;
-        if (currentOxygen > 100){
-            currentOxygen = 100;
+        this.currentScore+= 50;
+        this.currentOxygen+= 10;
+        if (this.currentOxygen > 100){
+            this.currentOxygen = 100;
         }
         this.capsule = this.game.add.sprite(game.rnd.integerInRange(100, 680), game.rnd.integerInRange(100, 450), 'capsule');
         this.alien = this.aliens.create(game.rnd.integerInRange(150, 650), game.rnd.integerInRange(150, 550), 'alien');
@@ -189,7 +189,7 @@ var gameState = {
         this.alien.body.collideWorldBounds = true;
         this.alien.anchor.setTo(0.5,0.5);
         this.game.physics.enable(this.capsule);
-        console.log('Score:', currentScore);
+        console.log('Score:', this.currentScore);
         
     },
     
@@ -231,33 +231,42 @@ var gameState = {
         }
     },
     
-    groundCollision : function(){
-        if (currentScore > highScore1){
-            highScore1 = currentScore;
-            highScore2 = highScore1;
-            highScore3 = highScore2;
-            highScore4 = highScore3;
-            highScore5 = highScore4;
+    groundCollision : function(){       
+        
+        if (this.currentScore > this.highScore1){
+            this.highScore1 = this.currentScore;
+            this.highScore2 = this.highScore1;
+            this.highScore3 = this.highScore2;
+            this.highScore4 = this.highScore3;
+            this.highScore5 = this.highScore4;
         }
-        else if (currentScore > highScore2){
-            highScore2 = currentScore;
-            highScore3 = highScore2;
-            highScore4 = highScore3;
-            highScore5 = highScore4;
+        else if (this.currentScore > this.highScore2){
+            this.highScore2 = this.currentScore;
+            this.highScore3 = this.highScore2;
+            this.highScore4 = this.highScore3;
+            this.highScore5 = this.highScore4;
         }
-        else if (currentScore > highScore3){
-            highScore3 = currentScore;
-            highScore4 = highScore3;
-            highScore5 = highScore4;
+        else if (this.currentScore > this.highScore3){
+            this.highScore3 = this.currentScore;
+            this.highScore4 = this.highScore3;
+            this.highScore5 = this.highScore4;
         }
-        else if (currentScore > highscore4){
-            highScore4 = currentScore;
-            highScore5 = highScore4;
+        else if (this.currentScore > this.highScore4){
+            this.highScore4 = this.currentScore;
+            this.highScore5 = this.highScore4;
         }
-        else if (currentScore > highScore5){
-            highScore5 = currentScore;
+        else if (this.currentScore > this.highScore5){
+            this.highScore5 = this.currentScore;
         }
-        console.log(highScore1,highScore2,highScore3,highScore4,highScore5);
+        
+        localStorage.setItem("highScore1", this.highScore1);
+        localStorage.setItem("highScore2", this.highScore2);
+        localStorage.setItem("highScore3", this.highScore3);
+        localStorage.setItem("highScore4", this.highScore4);
+        localStorage.setItem("highScore5", this.highScore5);
+        //Salva as variáveis no navegador
+        
+        console.log(this.highScore1,this.highScore2,this.highScore3,this.highScore4,this.highScore5);
         this.game.state.start('gameover');
     }
     
