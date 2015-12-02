@@ -136,11 +136,20 @@ var gameState = {
             }
         }, this);
         
-        this.currentOxygen-=0.05;
-        console.log('Oxygen:', this.currentOxygen);
+        globalState.currentOxygen-=0.05*globalState.hardness;
         
-        if (this.currentOxygen <= 0){
-            groundCollision();
+        if (globalState.currentScore >= 200) globalState.hardness = 1.25;
+        if (globalState.currentScore >= 400) globalState.hardness = 1.5;
+        if (globalState.currentScore >= 600) globalState.hardness = 1.75;
+        if (globalState.currentScore >= 800) globalState.hardness = 2;
+        if (globalState.currentScore >= 1000) globalState.hardness = 2.5;
+        if (globalState.currentScore >= 1500) globalState.hardness = 3;
+        if (globalState.currentScore >= 2000) globalState.hardness = 4;        
+        
+        console.log('Oxygen:', globalState.currentOxygen);
+        
+        if (globalState.currentOxygen <= 0){
+            this.groundCollision();
         }
         
         //se o player estiver parado;
@@ -180,10 +189,10 @@ var gameState = {
     
     oxygenCapsule: function(){
         this.capsule.kill();
-        this.currentScore+= 50;
-        this.currentOxygen+= 10;
-        if (this.currentOxygen > 100){
-            this.currentOxygen = 100;
+        globalState.currentScore+= 50;
+        globalState.currentOxygen+= 10;
+        if (globalState.currentOxygen > 100){
+            globalState.currentOxygen = 100;
         }
         
         this.alienX = game.rnd.integerInRange(150, 650);
@@ -197,7 +206,7 @@ var gameState = {
         this.alien.body.collideWorldBounds = true;
         this.alien.anchor.setTo(0.5,0.5);
         this.game.physics.enable(this.capsule);
-        console.log('Score:', this.currentScore);
+        console.log('Score:', globalState.currentScore);
         
     },
     
@@ -256,40 +265,42 @@ var gameState = {
     
     groundCollision : function(){       
         
-        if (this.currentScore > this.highScore1){
-            this.highScore1 = this.currentScore;
-            this.highScore2 = this.highScore1;
-            this.highScore3 = this.highScore2;
-            this.highScore4 = this.highScore3;
-            this.highScore5 = this.highScore4;
+        if (globalState.currentScore > globalState.highScore1){
+            globalState.highScore5 = globalState.highScore4;
+            globalState.highScore4 = globalState.highScore3;
+            globalState.highScore3 = globalState.highScore2;
+            globalState.highScore2 = globalState.highScore1;
+            globalState.highScore1 = globalState.currentScore;
         }
-        else if (this.currentScore > this.highScore2){
-            this.highScore2 = this.currentScore;
-            this.highScore3 = this.highScore2;
-            this.highScore4 = this.highScore3;
-            this.highScore5 = this.highScore4;
+        else if (globalState.currentScore > globalState.highScore2){
+            globalState.highScore5 = globalState.highScore4;
+            globalState.highScore4 = globalState.highScore3;
+            globalState.highScore3 = globalState.highScore2;
+            globalState.highScore2 = globalState.currentScore;
         }
-        else if (this.currentScore > this.highScore3){
-            this.highScore3 = this.currentScore;
-            this.highScore4 = this.highScore3;
-            this.highScore5 = this.highScore4;
+        else if (globalState.currentScore > globalState.highScore3){
+            globalState.highScore5 = globalState.highScore4;
+            globalState.highScore4 = globalState.highScore3;
+            globalState.highScore3 = globalState.currentScore;
         }
-        else if (this.currentScore > this.highScore4){
-            this.highScore4 = this.currentScore;
-            this.highScore5 = this.highScore4;
+        else if (globalState.currentScore > globalState.highScore4){
+            globalState.highScore5 = globalState.highScore4;
+            globalState.highScore4 = globalState.currentScore;
         }
-        else if (this.currentScore > this.highScore5){
-            this.highScore5 = this.currentScore;
+        else if (globalState.currentScore > globalState.highScore5){
+            globalState.highScore5 = globalState.currentScore;
         }
         
-        localStorage.setItem("highScore1", this.highScore1);
-        localStorage.setItem("highScore2", this.highScore2);
-        localStorage.setItem("highScore3", this.highScore3);
-        localStorage.setItem("highScore4", this.highScore4);
-        localStorage.setItem("highScore5", this.highScore5);
+        globalState.currentScore = 0;
+        
+        localStorage.setItem("highScore1", globalState.highScore1);
+        localStorage.setItem("highScore2", globalState.highScore2);
+        localStorage.setItem("highScore3", globalState.highScore3);
+        localStorage.setItem("highScore4", globalState.highScore4);
+        localStorage.setItem("highScore5", globalState.highScore5);
         //Salva as variáveis no navegador
         
-        console.log(this.highScore1,this.highScore2,this.highScore3,this.highScore4,this.highScore5);
+        console.log(globalState.highScore1,globalState.highScore2,globalState.highScore3,globalState.highScore4,globalState.highScore5);
         this.game.state.start('gameover');
     }
     

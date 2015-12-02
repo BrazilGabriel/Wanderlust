@@ -18,6 +18,7 @@ var introState = {
     
     // create: instanciar e inicializar todos os objetos dessa scene
     create: function(){
+        globalState.initHighscore();
         //criando maquina de estado
         this.game.status = 0;
         //adicionando o fundo animado
