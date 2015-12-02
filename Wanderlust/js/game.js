@@ -42,7 +42,7 @@ var gameState = {
         this.currentSpeed = 0;
         // Adicionando o sprite do jogador na posição (400, 300) usando o asset 'player' e sprite 5
         this.player = this.game.add.sprite(400, 500, 'player', 6);
-        this.capsule = this.game.add.sprite(this.game.world.randomX, this.game.world.randomY, 'capsule');        
+        this.capsule = this.game.add.sprite(game.rnd.integerInRange(0, 750), game.rnd.integerInRange(0, 570), 'capsule');        
         this.aliens = this.game.add.group();
         this.aliens.enableBody = true;
         this.aliens.physicsBodyType = Phaser.Physics.ARCADE;
@@ -125,7 +125,7 @@ var gameState = {
         //    }
         }
         this.aliens.forEachAlive(function(alien) {
-            this.game.physics.arcade.accelerateToObject(alien, this.player, 600, 120, 120);
+            this.game.physics.arcade.accelerateToObject(alien, this.player, game.rnd.integerInRange(300, 800), game.rnd.integerInRange(80, 240), game.rnd.integerInRange(80, 240));
             if(alien.body.x>this.player.body.x){
                 alien.scale.setTo(1,1);
             }
@@ -183,14 +183,35 @@ var gameState = {
         if (this.currentOxygen > 100){
             this.currentOxygen = 100;
         }
+        
+        this.alienX = game.rnd.integerInRange(150, 650);
+        this.alienY = game.rnd.integerInRange(150, 650);
+        
+        this.positionCheck(this.alienX);
+        
         this.capsule = this.game.add.sprite(game.rnd.integerInRange(100, 680), game.rnd.integerInRange(100, 450), 'capsule');
-        this.alien = this.aliens.create(game.rnd.integerInRange(150, 650), game.rnd.integerInRange(150, 550), 'alien');
+        this.alien = this.aliens.create(this.alienX, this.alienY, 'alien');
         this.aliens.callAll('animations.add', 'animations', 'on',[0,1,2,3,2,1], 6, true);
         this.alien.body.collideWorldBounds = true;
         this.alien.anchor.setTo(0.5,0.5);
         this.game.physics.enable(this.capsule);
         console.log('Score:', this.currentScore);
         
+    },
+    
+    positionCheck: function(alienX){
+        var continuar = true;
+        console.log("Função chamada")
+        
+        if (alienX >= this.player.x-100 && alienX <= this.player.x+100){
+            this.alienX = game.rnd.integerInRange(150, 650);
+            console.log("X reajustado")
+        }
+        else continuar = false;
+        
+        if (continuar){
+            this.positionCheck(this.alienX);
+        }
     },
     
     alienCollision: function(alien1, alien2){
