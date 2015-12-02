@@ -13,7 +13,7 @@ var introState = {
         this.game.load.spritesheet('back', 'assets/sprites/bg.png', 800, 600, 4);
         this.game.load.spritesheet('ship', 'assets/sprites/spaceship.png', 298, 105, 2);
         this.game.load.spritesheet('buttonplay', 'assets/sprites/buttonplay.png', 200, 60, 2);
-        
+        this.game.load.image('hud','assets/sprites/border.png');
     },   
     
     // create: instanciar e inicializar todos os objetos dessa scene
@@ -60,6 +60,7 @@ var introState = {
         //this.game.add.text(100, 100, "The Game", style);
         //this.game.add.text(100, 300, "Press enter to start", style);
         //this.cursors = this.game.input.keyboard.createCursorKeys();
+        this.game.add.sprite(0,0,'hud');
     },
     
     // update: o que fazer a cada quadro

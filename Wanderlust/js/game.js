@@ -9,13 +9,14 @@ var gameState = {
         // Para carregar um sprite simples, basta dar um nome ao mesmo e dizer qual é o arquivo
         this.game.load.image('asteroid', 'assets/sprites/asteroid.png'); //plataforma
         this.game.load.image('capsule', 'assets/sprites/ox.png');
+        this.game.load.image('hud','assets/sprites/border.png');
         
         // Para carregar um spritesheet, são necessários parâmetros adicionais além do nome e arquivo
         // é preciso também a largura e altura de cada sprite, e quantos sprites existem no spritesheet
         // Na chamada abaixo, os sprites possuem 80x80, e existem 8 sprites 
         //tamanho(25/34)
         this.game.load.spritesheet('alien', 'assets/sprites/alien1.png',70,50, 4);
-        this.game.load.spritesheet('player', 'assets/sprites/astro.png', 64, 64, 12);
+        this.game.load.spritesheet('player', 'assets/sprites/player.png', 34, 50, 7);
         this.game.load.spritesheet('back', 'assets/sprites/bg.png', 800, 600, 4);
     },
 
@@ -41,7 +42,6 @@ var gameState = {
         // Inicializando jogador  
         this.currentSpeed = 0;
         // Adicionando o sprite do jogador na posição (400, 300) usando o asset 'player' e sprite 5
-        this.player = this.game.add.sprite(400, 500, 'player', 6);
         this.capsule = this.game.add.sprite(game.rnd.integerInRange(0, 750), game.rnd.integerInRange(0, 570), 'capsule');        
         this.aliens = this.game.add.group();
         this.aliens.enableBody = true;
@@ -56,6 +56,7 @@ var gameState = {
         //this.aliens.animations.add('on',[0,1,2,3,2,1],2);
 
         // Ajustando a âncora do objeto (http://phaser.io/docs/2.4.4/Phaser.Sprite.html#anchor)
+        this.player = this.game.add.sprite(400, 500, 'player', 4);
         this.player.anchor.setTo(0.5, 0.5);
         this.player.scale.setTo(0.75,0.75);
         // Adicionando física ao objeto
@@ -69,7 +70,7 @@ var gameState = {
         // Parâmetros: nome da animação, sprites que compõem a animação, quadros por segundo
         this.player.animations.add('walkl', [2], 6);
         this.player.animations.add('walkr', [1], 6);
-        this.player.animations.add('idle', [7,6,8,6], 2);
+        this.player.animations.add('idle', [5,4,6,4], 4);
         this.player.animations.add('jump', [0], 6);
         
         this.keys = this.game.input.keyboard.createCursorKeys();
@@ -78,6 +79,7 @@ var gameState = {
         
         //Chama a função que cria os meteoros
         this.asteroidGenerator = this.game.time.events.loop(4000, this.lateralShoots, this);
+        this.game.add.sprite(0,0,'hud');
     },
 
     // update: o que fazer a cada quadro
@@ -163,7 +165,7 @@ var gameState = {
             }
             else{
                 this.player.animations.stop();
-                this.player.frame = 9;
+                this.player.frame = 3;
             }
         }   
 
