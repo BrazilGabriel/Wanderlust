@@ -34,8 +34,6 @@ var gameState = {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         
         //Variáveis de Controle
-        this.oxygen = 100;
-        this.score = 0;
         
         // Cor de fundo - #0082bc é um tom de azul
         //this.game.stage.backgroundColor = '#0082bc';
@@ -135,11 +133,12 @@ var gameState = {
                 alien.scale.setTo(-1,1);
             }
         }, this);
-        this.oxygen-=0.07;
-        console.log('Oxygen', this.oxygen);
         
-        if (this.oxygen <= 0){
-            this.groundCollision();
+        currentOxygen-=0.05;
+        console.log('Oxygen:', currentOxygen);
+        
+        if (currentOxygen <= 0){
+            groundCollision();
         }
         
         //se o player estiver parado;
@@ -179,10 +178,10 @@ var gameState = {
     
     oxygenCapsule: function(){
         this.capsule.kill();
-        this.score+= 50;
-        this.oxygen+= 10;
-        if (this.oxygen > 100){
-            this.oxygen = 100;
+        currentScore+= 50;
+        currentOxygen+= 10;
+        if (currentOxygen > 100){
+            currentOxygen = 100;
         }
         this.capsule = this.game.add.sprite(game.rnd.integerInRange(100, 680), game.rnd.integerInRange(100, 450), 'capsule');
         this.alien = this.aliens.create(game.rnd.integerInRange(150, 650), game.rnd.integerInRange(150, 550), 'alien');
@@ -190,7 +189,7 @@ var gameState = {
         this.alien.body.collideWorldBounds = true;
         this.alien.anchor.setTo(0.5,0.5);
         this.game.physics.enable(this.capsule);
-        console.log('Score:', this.score);
+        console.log('Score:', currentScore);
         
     },
     
@@ -233,8 +232,34 @@ var gameState = {
     },
     
     groundCollision : function(){
+        if (currentScore > highScore1){
+            highScore1 = currentScore;
+            highScore2 = highScore1;
+            highScore3 = highScore2;
+            highScore4 = highScore3;
+            highScore5 = highScore4;
+        }
+        else if (currentScore > highScore2){
+            highScore2 = currentScore;
+            highScore3 = highScore2;
+            highScore4 = highScore3;
+            highScore5 = highScore4;
+        }
+        else if (currentScore > highScore3){
+            highScore3 = currentScore;
+            highScore4 = highScore3;
+            highScore5 = highScore4;
+        }
+        else if (currentScore > highscore4){
+            highScore4 = currentScore;
+            highScore5 = highScore4;
+        }
+        else if (currentScore > highScore5){
+            highScore5 = currentScore;
+        }
+        console.log(highScore1,highScore2,highScore3,highScore4,highScore5);
         this.game.state.start('gameover');
-    },
+    }
     
     /*moveAliens : function(alien) { 
     this.accelerate(this.alien,this.player,60);
