@@ -6,30 +6,49 @@
 var gameOverState = {
     // preload: carregar todos os assets necessários para esta scene ou para as próximas
     preload: function(){
-        // Não há nenhum asset a ser carregado aqui, então a função fica vazia    
+    // Não há nenhum asset a ser carregado aqui, então a função fica vazia 
+        this.game.load.bitmapFont('fipps', 'assets/fonts/fipps/fipps.png', 'assets/fonts/fipps/fipps.fnt');
+        this.game.load.bitmapFont('fippslight', 'assets/fonts/fipps/fippslight.png', 'assets/fonts/fipps/fippslight.fnt');
+        
+        this.game.load.image('border', 'assets/sprites/border.png');
+        this.game.load.image('dead', 'assets/sprites/dead.png');
+        
+        this.game.load.spritesheet('back', 'assets/sprites/bg.png', 800, 600, 4);
+    
     },   
     
     // create: instanciar e inicializar todos os objetos dessa scene
     create: function(){
-        // cor de fundo - #000000 indica a cor preta
-        this.game.stage.backgroundColor = "#000000";
-        // style é uma variável que indica quais as propriedades do texto
-        var style = { 
-            font: "65px Arial", // Fonte a ser utilizada
-            fill: "#ffffff", // Cor da fonte; #ffffff indica a cor branca
-            align: "center" // alinhamento do texto
-        }
-        // Adicionando um texto à scene
-        // Parâmetros: X, Y, texto, estilo (definido acima)
-        this.game.add.text(100, 100, "Game Over", style);
-        this.game.add.text(100, 300, "Press enter to restart", style);
+    
+        this.back = this.game.add.sprite(0,0,'back', 0);
+        this.back.animations.add('on', [0,1,2,3], 6.5);
+  
+        this.gameOver = this.game.add.bitmapText(400, 150, 'fipps','GAME OVER', 40);
+        this.gameOver.anchor.setTo(0.5,0.5);
+        this.gameOver.generateTexture;
+        this.finalScore = this.game.add.bitmapText(50, 300, 'fipps','Ponts', 30);
+        this.finalScore.align = 'center'
+        this.finalScore.generateTexture;
+    
+        this.dead = this.game.add.sprite(800,650,'dead');
+        this.dead.anchor.setTo(1,1);
+        
+        this.game.add.bitmapText(50,500,'fipps','Press enter to try again!',15);
+        this.border = this.game.add.sprite(0,0,'border');
+        
     },
     
-    update: function(){
-        // Verifica se a tecla ENTER foi pressionada, utilizando o objeto relacionado do game
-        if(this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)){
+    update: function(){ 
+        
+        this.back.animations.play('on');
+                
+        this.finalScore.text = ('YOUR SCORE: \n' + globalState.currentScore);
+        if(this.game.input.keyboard.isDown(Phaser.Keyboard.ESC)||this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)){
             // Inicia o próximo state
             this.game.state.start('intro');
+            globalState.currentScore = 0;
         }
-    }
+        this.border.bringToTop();
+    },
+    
 }

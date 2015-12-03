@@ -314,8 +314,7 @@ var gameState = {
             globalState.highScore5 = globalState.currentScore;
         }
         
-        globalState.currentScore = 0;        
-        globalState.currentOxygen = 100;
+        globalState.currentOxygen = 100;        
         globalState.hardness = 1;
         
         localStorage.setItem("highScore1", globalState.highScore1);

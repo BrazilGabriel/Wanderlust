@@ -7,15 +7,15 @@ var creditsState = {
     // preload: carregar todos os assets necessários para esta scene ou para as próximas
     preload: function(){
     // Não há nenhum asset a ser carregado aqui, então a função fica vazia 
-    this.game.load.bitmapFont('fipps', 'assets/fonts/fipps/fipps.png', 'assets/fonts/fipps/fipps.fnt');
-    this.game.load.bitmapFont('fippslight', 'assets/fonts/fipps/fippslight.png', 'assets/fonts/fipps/fippslight.fnt');
-    
-    this.game.load.image('thanks', 'assets/sprites/thanks.png', 130,70);
-    this.game.load.image('uea', 'assets/sprites/uealogo.png', 122,122);
-    this.game.load.image('border', 'assets/sprites/border.png', 122,122);
-    this.game.load.image('team', 'assets/sprites/igniters.png', 200, 112);
-    
-    this.game.load.spritesheet('back', 'assets/sprites/bg.png', 800, 600, 4);
+        this.game.load.bitmapFont('fipps', 'assets/fonts/fipps/fipps.png', 'assets/fonts/fipps/fipps.fnt');
+        this.game.load.bitmapFont('fippslight', 'assets/fonts/fipps/fippslight.png', 'assets/fonts/fipps/fippslight.fnt');
+         
+        this.game.load.image('thanks', 'assets/sprites/thanks.png', 130,70);
+        this.game.load.image('uea', 'assets/sprites/uealogo.png', 122,122);
+        this.game.load.image('border', 'assets/sprites/border.png', 122,122);
+        this.game.load.image('team', 'assets/sprites/igniters.png', 200, 112);
+        
+        this.game.load.spritesheet('back', 'assets/sprites/bg.png', 800, 600, 4);
     
 
     },   
@@ -47,15 +47,12 @@ var creditsState = {
         this.text = this.game.add.bitmapText(400, 625, 'fipps', this.team, 18);
         this.text.anchor.setTo(1,0);
         this.text.align = 'right';
-        this.text.generateTexture;
     
         this.text2 = this.game.add.bitmapText(400, 625, 'fippslight', this.func, 18);
-        this.text2.generateTexture;
         
         this.subs = this.game.add.bitmapText(400,600,'fipps',this.class, 16);
         this.subs.anchor.setTo(0.5,0);
         this.subs.align = 'center';
-        this.sub.generateTexture;
         
         
         this.thanks = this.game.add.sprite(400,1750, 'thanks');
@@ -111,6 +108,9 @@ var creditsState = {
         }
         
         
+        this.text.generateTexture;
+        this.text2.generateTexture;
+        this.sub.generateTexture;
         this.title.body.velocity.setTo(0, this.velocity);
         this.sub.body.velocity.setTo(0, this.velocity);
         this.text.body.velocity.setTo(0, this.velocity);
