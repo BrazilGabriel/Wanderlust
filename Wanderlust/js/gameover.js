@@ -48,6 +48,11 @@ var gameOverState = {
             this.game.state.start('intro');
             globalState.currentScore = 0;
         }
+        if(this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)){
+            // Inicia o próximo state
+            this.game.state.start('game');
+            globalState.currentScore = 0;
+        }
         this.border.bringToTop();
     },
     
