@@ -7,9 +7,10 @@ var gameState = {
     // preload: carregar todos os assets necessários para esta scene ou para as próximas
     preload: function() {
         // Para carregar um sprite simples, basta dar um nome ao mesmo e dizer qual é o arquivo
+        this.game.load.bitmapFont('fipps','assets/fonts/fipps/fipps.png','assets/fonts/fipps/fipps.fnt');
+        
         this.game.load.image('asteroid', 'assets/sprites/asteroid.png'); //plataforma
-        this.game.load.image('capsule', 'assets/sprites/ox.png');
-        this.game.load.image('hud','assets/sprites/border.png');
+        this.game.load.image('border','assets/sprites/border.png');
         
         // Para carregar um spritesheet, são necessários parâmetros adicionais além do nome e arquivo
         // é preciso também a largura e altura de cada sprite, e quantos sprites existem no spritesheet
@@ -18,6 +19,8 @@ var gameState = {
         this.game.load.spritesheet('alien', 'assets/sprites/alien1.png',70,50, 4);
         this.game.load.spritesheet('player', 'assets/sprites/player.png', 34, 50, 7);
         this.game.load.spritesheet('back', 'assets/sprites/bg.png', 800, 600, 4);
+        this.game.load.spritesheet('capsule', 'assets/sprites/ox.png', 12, 25, 4);
+    
     },
 
     // create: instanciar e inicializar todos os objetos dessa scene
@@ -42,7 +45,8 @@ var gameState = {
         // Inicializando jogador  
         this.currentSpeed = 0;
         // Adicionando o sprite do jogador na posição (400, 300) usando o asset 'player' e sprite 5
-        this.capsule = this.game.add.sprite(game.rnd.integerInRange(0, 750), game.rnd.integerInRange(0, 570), 'capsule');        
+        this.capsule = this.game.add.sprite(game.rnd.integerInRange(0, 750), game.rnd.integerInRange(0, 570), 'capsule'); 
+        this.capsule.animations.add('on',[0,1,2,3,0,0,0,0,0,0,0,0], 8);
         this.aliens = this.game.add.group();
         this.aliens.enableBody = true;
         this.aliens.physicsBodyType = Phaser.Physics.ARCADE;
@@ -79,12 +83,16 @@ var gameState = {
         
         //Chama a função que cria os meteoros
         this.asteroidGenerator = this.game.time.events.loop(4000, this.lateralShoots, this);
-        this.game.add.sprite(0,0,'hud');
+        this.border = this.game.add.sprite(0,0,'border');
+        
+        this.score = this.game.add.bitmapText(30, 40, 'fipps', 'SCORE: ', 15);
+        this.oxygen = this.game.add.bitmapText(590, 40, 'fipps', 'Oxygen: ', 15);
+        
     },
 
     // update: o que fazer a cada quadro
     update: function() {
-        
+        this.capsule.animations.play('on');
         //animando o fundo
         this.aliens.callAll('animations.play', 'animations', 'on');
         this.back.animations.play('on');
@@ -177,6 +185,13 @@ var gameState = {
                 this.player.frame = 3;
             }
         }   
+        
+        this.score.text = 'SCORE: ' + globalState.currentScore;
+        this.score.generateTexture;
+        this.oxygen.text = 'OXYGEN: ' + game.math.roundTo(globalState.currentOxygen,0) +'\'/.';
+        this.oxygen.generateTexture;
+
+        this.border.bringToTop();
 
      },
     
@@ -201,6 +216,7 @@ var gameState = {
         this.positionCheck(this.alienX);
         
         this.capsule = this.game.add.sprite(game.rnd.integerInRange(100, 680), game.rnd.integerInRange(100, 450), 'capsule');
+        this.capsule.animations.add('on',[0,1,2,3,0,0,0,0,0,0,0,0], 8);
         this.alien = this.aliens.create(this.alienX, this.alienY, 'alien');
         this.aliens.callAll('animations.add', 'animations', 'on',[0,1,2,3,2,1], 6, true);
         this.alien.body.collideWorldBounds = true;

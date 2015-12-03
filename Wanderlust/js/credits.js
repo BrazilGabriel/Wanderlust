@@ -11,6 +11,9 @@ var creditsState = {
     this.game.load.bitmapFont('fippslight', 'assets/fonts/fipps/fippslight.png', 'assets/fonts/fipps/fippslight.fnt');
     
     this.game.load.image('thanks', 'assets/sprites/thanks.png', 130,70);
+    this.game.load.image('uea', 'assets/sprites/uealogo.png', 122,122);
+    this.game.load.image('border', 'assets/sprites/border.png', 122,122);
+    this.game.load.image('team', 'assets/sprites/igniters.png', 200, 112);
     
     this.game.load.spritesheet('back', 'assets/sprites/bg.png', 800, 600, 4);
     
@@ -58,8 +61,19 @@ var creditsState = {
         this.thanks = this.game.add.sprite(400,1750, 'thanks');
         this.thanks.scale.setTo(2,2);
         this.thanks.anchor.setTo(0.5,0.5)
-    
-        this.game.physics.arcade.enable([ this.sub, this.title,this.text,this.text2, this.subs, this.thanks ]);
+
+        this.uea = this.game.add.sprite(200, 2050, 'uea');
+        this.uea.anchor.setTo(0.5,0.5);
+        this.igniters = this.game.add.sprite(600, 2050, 'team');
+        this.igniters.anchor.setTo(0.5,0.5);
+        this.igniters.scale.setTo(1.3,1.3);
+
+        
+        
+        
+        this.border = this.game.add.sprite(0,0,'border');
+        
+        this.game.physics.arcade.enable([ this.sub, this.title,this.text,this.text2, this.subs, this.thanks, this.uea, this.igniters ]);
 
         this.velocity = 0;
 
@@ -103,11 +117,14 @@ var creditsState = {
         this.text2.body.velocity.setTo(0, this.velocity);
         this.subs.body.velocity.setTo(0, this.velocity);
         this.thanks.body.velocity.setTo(0, this.velocity);
+        this.uea.body.velocity.setTo(0, this.velocity);
+        this.igniters.body.velocity.setTo(0, this.velocity);
         
         if(this.game.input.keyboard.isDown(Phaser.Keyboard.ESC)){
             // Inicia o próximo state
             this.game.state.start('intro');
         }
+        this.border.bringToTop();
     },
     changeStatus: function(){
         

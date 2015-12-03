@@ -8,7 +8,6 @@ var introState = {
     // preload: carregar todos os assets necessários para esta scene ou para as próximas
     preload: function(){
         // carregando o logo animado
-        this.game.load.image('ship2', 'assets/sprites/ship2.png', 690,140);
         this.game.load.spritesheet('logo', 'assets/sprites/logo.png', 363, 183, 9);
         this.game.load.spritesheet('back', 'assets/sprites/bg.png', 800, 600, 4);
         this.game.load.spritesheet('ship', 'assets/sprites/spaceship.png', 298, 105, 2);
@@ -28,13 +27,11 @@ var introState = {
         
         //adicionando a nave na tela
         this.ship = this.game.add.sprite(350,400,'ship', 0);
-        //this.ship2 = this.game.add.sprite(555,300,'ship2', 0);
-        
+               
         this.ship.animations.add('on', [0,1], 10);
         this.ship.anchor.setTo(0.5, 0.5);
         this.ship.scale.setTo(1.5,1.5);
-        //this.ship2.scale.setTo(-1.2,1.2);
-        
+               
     
         //adicionando o logo na tela
         this.logo = this.game.add.sprite(400, 150, 'logo', 0);
