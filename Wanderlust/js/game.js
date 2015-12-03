@@ -17,6 +17,7 @@ var gameState = {
         // Na chamada abaixo, os sprites possuem 80x80, e existem 8 sprites 
         //tamanho(25/34)
         this.game.load.spritesheet('alien', 'assets/sprites/alien1.png',70,50, 4);
+        this.game.load.spritesheet('alien2', 'assets/sprites/alien2.png',45.25,50, 4);
         this.game.load.spritesheet('player', 'assets/sprites/player.png', 34, 50, 7);
         this.game.load.spritesheet('back', 'assets/sprites/bg.png', 800, 600, 4);
         this.game.load.spritesheet('capsule', 'assets/sprites/ox.png', 12, 25, 4);
@@ -217,7 +218,13 @@ var gameState = {
         
         this.capsule = this.game.add.sprite(game.rnd.integerInRange(100, 680), game.rnd.integerInRange(100, 450), 'capsule');
         this.capsule.animations.add('on',[0,1,2,3,0,0,0,0,0,0,0,0], 8);
-        this.alien = this.aliens.create(this.alienX, this.alienY, 'alien');
+        
+        if(Phaser.Utils.chanceRoll(50)){
+            this.alien = this.aliens.create(this.alienX, this.alienY, 'alien');
+        }
+        else{
+            this.alien = this.aliens.create(this.alienX, this.alienY, 'alien2');
+        }
         this.aliens.callAll('animations.add', 'animations', 'on',[0,1,2,3,2,1], 6, true);
         this.alien.body.collideWorldBounds = true;
         this.alien.anchor.setTo(0.5,0.5);
