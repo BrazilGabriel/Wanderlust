@@ -3,10 +3,10 @@
 // Um estado é sempre um objeto JavaScript, com no mínimo as 3 funções principais:
 // preload, create e update
 // Não esquecer da vírgula depois da definição de cada função
-var gameOverState = {
+var scoreState = {
     // preload: carregar todos os assets necessários para esta scene ou para as próximas
     preload: function(){
-         
+
         this.game.load.bitmapFont('fipps', 'assets/fonts/fipps/fipps.png', 'assets/fonts/fipps/fipps.fnt');
         this.game.load.bitmapFont('fippslight', 'assets/fonts/fipps/fippslight.png', 'assets/fonts/fipps/fippslight.fnt');
         
@@ -26,7 +26,6 @@ var gameOverState = {
         this.gameOver = this.game.add.bitmapText(400, 150, 'fipps','GAME OVER', 40);
         this.gameOver.anchor.setTo(0.5,0.5);
         this.gameOver.generateTexture;
-        
         this.finalScore = this.game.add.bitmapText(50, 300, 'fipps','Ponts', 30);
         this.finalScore.align = 'center'
         this.finalScore.generateTexture;
@@ -35,7 +34,6 @@ var gameOverState = {
         this.dead.anchor.setTo(1,1);
         
         this.game.add.bitmapText(50,500,'fipps','Press enter to try again!',15);
-        
         this.border = this.game.add.sprite(0,0,'border');
         
     },
@@ -57,4 +55,5 @@ var gameOverState = {
         }
         this.border.bringToTop();
     },
+    
 }

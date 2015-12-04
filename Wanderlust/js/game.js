@@ -6,16 +6,12 @@
 var gameState = {
     // preload: carregar todos os assets necessários para esta scene ou para as próximas
     preload: function() {
-        // Para carregar um sprite simples, basta dar um nome ao mesmo e dizer qual é o arquivo
+
         this.game.load.bitmapFont('fipps','assets/fonts/fipps/fipps.png','assets/fonts/fipps/fipps.fnt');
         
-        this.game.load.image('asteroid', 'assets/sprites/asteroid.png'); //plataforma
-        this.game.load.image('border','assets/sprites/border.png');
+        this.game.load.image('asteroid', 'assets/sprites/asteroid.png');
+        this.game.load.image('border','assets/sprites/scanlines.png');
         
-        // Para carregar um spritesheet, são necessários parâmetros adicionais além do nome e arquivo
-        // é preciso também a largura e altura de cada sprite, e quantos sprites existem no spritesheet
-        // Na chamada abaixo, os sprites possuem 80x80, e existem 8 sprites 
-        //tamanho(25/34)
         this.game.load.spritesheet('alien', 'assets/sprites/alien1.png',70,50, 4);
         this.game.load.spritesheet('alien2', 'assets/sprites/alien2.png',45.25,50, 4);
         this.game.load.spritesheet('player', 'assets/sprites/player.png', 34, 50, 7);
@@ -26,10 +22,7 @@ var gameState = {
 
     // create: instanciar e inicializar todos os objetos dessa scene
     create: function() {
-        // Redimensionando o "mundo", ou seja, o tamanho efetivo da scene, que pode ser maior do que o tamanho do canvas
-        // Desta forma podemos ter fases bem maiores do que o canvas mostra, e uma "câmera" mostra a porção relevante do mundo
-
-        
+                
         //adicionando o fundo animado
         this.back = this.game.add.sprite(0,0,'back', 0);
         this.back.animations.add('on', [0,1,2,3], 7);
@@ -38,35 +31,23 @@ var gameState = {
         // o sistema Arcade é o mais simples de todos, mas também é o mais eficiente em termos de processamento.
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         
-        //Variáveis de Controle
-        
-        // Cor de fundo - #0082bc é um tom de azul
-        //this.game.stage.backgroundColor = '#0082bc';
-
-        // Inicializando jogador  
         this.currentSpeed = 0;
-        // Adicionando o sprite do jogador na posição (400, 300) usando o asset 'player' e sprite 5
+        
         this.capsule = this.game.add.sprite(game.rnd.integerInRange(0, 750), game.rnd.integerInRange(0, 570), 'capsule'); 
         this.capsule.animations.add('on',[0,1,2,3,0,0,0,0,0,0,0,0], 8);
+       
         this.aliens = this.game.add.group();
         this.aliens.enableBody = true;
         this.aliens.physicsBodyType = Phaser.Physics.ARCADE;
-       // this.alien = this.aliens.create(0,0, 'alien');
         
-      //  this.aliens.create(400, 300, 'alien', 0);
-       // this.box.callAll('animations.add', 'animations', 'idle',[0,0,0,1,2,1], 6, true);
-//this.box.callAll('animations.play', 'animations', 'idle');
-      
-      
-        //this.aliens.animations.add('on',[0,1,2,3,2,1],2);
-
-        // Ajustando a âncora do objeto (http://phaser.io/docs/2.4.4/Phaser.Sprite.html#anchor)
         this.player = this.game.add.sprite(400, 500, 'player', 4);
         this.player.anchor.setTo(0.5, 0.5);
         this.player.scale.setTo(0.75,0.75);
+        
         // Adicionando física ao objeto
         this.game.physics.enable(this.player);
         this.game.physics.enable(this.capsule);
+        
         // Colidir com os "limites do mundo", ou seja, com os limites definidos em this.game.world.resize()
         // Não gera eventos de colisão, no entanto
         this.player.body.collideWorldBounds = true;
@@ -79,11 +60,10 @@ var gameState = {
         this.player.animations.add('jump', [0], 6);
         
         this.keys = this.game.input.keyboard.createCursorKeys();
-        // A função abaixo captura apenas uma tecla e a associa à variável jumpButton
-        // this.jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR); 
         
         //Chama a função que cria os meteoros
         this.asteroidGenerator = this.game.time.events.loop(4000, this.lateralShoots, this);
+        
         this.border = this.game.add.sprite(0,0,'border');
         
         this.score = this.game.add.bitmapText(30, 40, 'fipps', 'SCORE: ', 15);
@@ -93,17 +73,13 @@ var gameState = {
 
     // update: o que fazer a cada quadro
     update: function() {
-        this.capsule.animations.play('on');
-        //animando o fundo
-        this.aliens.callAll('animations.play', 'animations', 'on');
-        this.back.animations.play('on');
         
-        //if(this.aliens.x<this.player.body.x){
-          //  this.aliens.scale.setTo(-1,1);
-        //}
-        //else{
-    // this.aliens.scale.setTo(1,1);
-    // }
+        this.capsule.animations.play('on');
+        
+        //animando o fundo
+        this.back.animations.play('on');
+        this.aliens.callAll('animations.play', 'animations', 'on');
+        
         // Adicionalmente, a função this.groundCollision() é chamada no evento da colisão
         this.game.physics.arcade.collide(this.player, this.asteroid, this.groundCollision, null, this);
         this.game.physics.arcade.collide(this.player, this.aliens, this.groundCollision, null, this);
@@ -131,9 +107,6 @@ var gameState = {
             if (this.currentSpeed > 0){
                 this.currentSpeed -= 2;
             }
-        //    if (this.currentSpeed < 0){
-        //        this.currentSpeed += 2;
-        //    }
         }
         this.aliens.forEachAlive(function(alien) {
             this.game.physics.arcade.accelerateToObject(alien, this.player, game.rnd.integerInRange(300, 800), game.rnd.integerInRange(80, 240), game.rnd.integerInRange(80, 240));
@@ -167,16 +140,16 @@ var gameState = {
             this.time.events.add(Phaser.Timer.SECOND * 2, this.lol, this);
         }
         if (this.currentSpeed != 0){
-        //senão, para as animação idle
+            //se nao, para as animação idle
             this.player.animations.stop('idle');
-        //movimentação do pleyer em função do ângulo (ÂNGULO EM RAD, VELOCIDADE, OBJETO A SER MOVIDO)
+            //movimentação do pleyer em função do ângulo (ÂNGULO EM RAD, VELOCIDADE, OBJETO A SER MOVIDO)
             this.game.physics.arcade.velocityFromRotation(this.player.rotation-Math.PI/2, this.currentSpeed, this.player.body.velocity);
-        //acionar o resto das animações    
+            //acionar o resto das animações    
             if(this.keys.left.isDown){
-                this.player.animations.play('walkl'); // Executar animação 'walk'
+                this.player.animations.play('walkl'); // Executar animação 'walkl'
             }
             else if(this.keys.right.isDown) {
-                this.player.animations.play('walkr'); // Executar animação 'walk'
+                this.player.animations.play('walkr'); // Executar animação 'walkr'
             }
             else if(this.keys.up.isDown){
                 this.player.animations.play('jump'); // Executar animação 'jump'
@@ -189,6 +162,7 @@ var gameState = {
         
         this.score.text = 'SCORE: ' + globalState.currentScore;
         this.score.generateTexture;
+        
         this.oxygen.text = 'OXYGEN: ' + game.math.roundTo(globalState.currentOxygen,0) +'\'/.';
         this.oxygen.generateTexture;
 
@@ -328,15 +302,5 @@ var gameState = {
         this.game.state.start('gameover');
     }
     
-    /*moveAliens : function(alien) { 
-    this.accelerate(this.alien,this.player,60);
-    },
     
-    accelerate : function(obj1, obj2, speed) {
-        if (typeof speed === 'undefined') { speed = 60; }
-        var angle = Math.atan2(obj2.y - obj1.y, obj2.x - obj1.x);
-        obj1.body.rotation = angle + this.game.math.degToRad(90);  // correct angle of angry bullets (depends on the sprite used)
-        obj1.body.force.x = Math.cos(angle) * speed;   
-        obj1.body.force.y = Math.sin(angle) * speed;
-    }*/
 }

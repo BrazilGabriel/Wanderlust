@@ -6,18 +6,17 @@
 var creditsState = {
     // preload: carregar todos os assets necessários para esta scene ou para as próximas
     preload: function(){
-    // Não há nenhum asset a ser carregado aqui, então a função fica vazia 
+     
         this.game.load.bitmapFont('fipps', 'assets/fonts/fipps/fipps.png', 'assets/fonts/fipps/fipps.fnt');
         this.game.load.bitmapFont('fippslight', 'assets/fonts/fipps/fippslight.png', 'assets/fonts/fipps/fippslight.fnt');
          
         this.game.load.image('thanks', 'assets/sprites/thanks.png', 130,70);
         this.game.load.image('uea', 'assets/sprites/uealogo.png', 122,122);
-        this.game.load.image('border', 'assets/sprites/border.png', 122,122);
+        this.game.load.image('border', 'assets/sprites/scanlines.png', 122,122);
         this.game.load.image('team', 'assets/sprites/igniters.png', 200, 112);
         
         this.game.load.spritesheet('back', 'assets/sprites/bg.png', 800, 600, 4);
     
-
     },   
     
     // create: instanciar e inicializar todos os objetos dessa scene
@@ -27,21 +26,20 @@ var creditsState = {
     
         this.status = 0;
     
-        //  this.game.stage.backgroundColor = "999999";
-
         this.back = this.game.add.sprite(0,0,'back', 0);
         this.back.animations.add('on', [0,1,2,3], 6.5);
   
         this.title = this.game.add.bitmapText(400, 500, 'fipps','WANDERLUST', 32);
         this.title.anchor.setTo(0.5,0.5);
-        this.title.generateTexture;
+    
         this.sub = this.game.add.bitmapText(400, 550, 'fipps','Credits', 28);
         this.sub.anchor.setTo(0.5,0.5);
-        this.sub.generateTexture;
     
     
         this.team = '\nDOUGLAS MATHEUS \n\n\nVIRGINIA OLIVEIRA \n\n\n\nGABRIEL ALONSO \n\n\nGABRIEL BRASIL \n\n\n\n\nBRUNO ARAUJO \n\nCRISTINA ARAUJO \n\nRAFAEL LIMA \n\n\n\n\n\n\n\n';
-        this.func = '\nConcept\nElements\n\nConcept\nCharacters \n\n\nPhysics \nSound Design \n\nGame Designer\nAnimations\nGame UI\n \n\nProgramming\n\nGame Design\n\nConcept Art'   
+        
+        this.func = '\nConcept\nElements\n\nConcept\nCharacters \n\n\nPhysics \nSound Design \n\nGame Designer\nAnimations\nGame UI\n \n\nProgramming\n\nGame Design\n\nConcept \nArt'   
+        
         this.class = 'Artists\n\n\n\n\n\n\n\nProgrammers\n\n\n\n\n\n\n\n\nGuiding Teachers';
     
         this.text = this.game.add.bitmapText(400, 625, 'fipps', this.team, 18);
@@ -53,8 +51,7 @@ var creditsState = {
         this.subs = this.game.add.bitmapText(400,600,'fipps',this.class, 16);
         this.subs.anchor.setTo(0.5,0);
         this.subs.align = 'center';
-        
-        
+                
         this.thanks = this.game.add.sprite(400,1750, 'thanks');
         this.thanks.scale.setTo(2,2);
         this.thanks.anchor.setTo(0.5,0.5)
@@ -64,9 +61,6 @@ var creditsState = {
         this.igniters = this.game.add.sprite(600, 2050, 'team');
         this.igniters.anchor.setTo(0.5,0.5);
         this.igniters.scale.setTo(1.3,1.3);
-
-        
-        
         
         this.border = this.game.add.sprite(0,0,'border');
         
@@ -74,12 +68,12 @@ var creditsState = {
 
         this.velocity = 0;
 
-        
         if (this.status==0){
             this.game.time.events.add(2000, this.changeStatus, this);
         }
         
     },
+    
     update: function(){ 
         
         this.back.animations.play('on');
@@ -108,9 +102,11 @@ var creditsState = {
         }
         
         
+        this.title.generateTexture;
+        this.sub.generateTexture;
         this.text.generateTexture;
         this.text2.generateTexture;
-        this.sub.generateTexture;
+        
         this.title.body.velocity.setTo(0, this.velocity);
         this.sub.body.velocity.setTo(0, this.velocity);
         this.text.body.velocity.setTo(0, this.velocity);
@@ -126,8 +122,8 @@ var creditsState = {
         }
         this.border.bringToTop();
     },
+    
     changeStatus: function(){
-        
         this.status=1;
     }
 }
