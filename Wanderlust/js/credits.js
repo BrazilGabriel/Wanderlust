@@ -84,7 +84,7 @@ var creditsState = {
         this.back.animations.play('on');
                 
         if(this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN)){
-            if((this.text.body.height+this.text.body.y)>=300){
+            if((this.text.body.height+this.text.body.y)>=280){
                 this.velocity=-300;
             }
             else{
@@ -99,7 +99,7 @@ var creditsState = {
                 this.velocity=0;
             }
         }
-        else if(this.status==1 &&(this.text.body.height+this.text.body.y>=300)){
+        else if(this.status==1 &&(this.text.body.height+this.text.body.y>=280)){
             this.velocity=-100;
         }
         else if(this.status==1){
