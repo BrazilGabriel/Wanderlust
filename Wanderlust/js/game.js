@@ -262,42 +262,8 @@ var gameState = {
     
     groundCollision : function(){       
         
-        if (globalState.currentScore > globalState.highScore1){
-            globalState.highScore5 = globalState.highScore4;
-            globalState.highScore4 = globalState.highScore3;
-            globalState.highScore3 = globalState.highScore2;
-            globalState.highScore2 = globalState.highScore1;
-            globalState.highScore1 = globalState.currentScore;
-        }
-        else if (globalState.currentScore > globalState.highScore2){
-            globalState.highScore5 = globalState.highScore4;
-            globalState.highScore4 = globalState.highScore3;
-            globalState.highScore3 = globalState.highScore2;
-            globalState.highScore2 = globalState.currentScore;
-        }
-        else if (globalState.currentScore > globalState.highScore3){
-            globalState.highScore5 = globalState.highScore4;
-            globalState.highScore4 = globalState.highScore3;
-            globalState.highScore3 = globalState.currentScore;
-        }
-        else if (globalState.currentScore > globalState.highScore4){
-            globalState.highScore5 = globalState.highScore4;
-            globalState.highScore4 = globalState.currentScore;
-        }
-        else if (globalState.currentScore > globalState.highScore5){
-            globalState.highScore5 = globalState.currentScore;
-        }
-        
-        globalState.currentOxygen = 100;        
         globalState.hardness = 1;
-        
-        localStorage.setItem("highScore1", globalState.highScore1);
-        localStorage.setItem("highScore2", globalState.highScore2);
-        localStorage.setItem("highScore3", globalState.highScore3);
-        localStorage.setItem("highScore4", globalState.highScore4);
-        localStorage.setItem("highScore5", globalState.highScore5);
-        //Salva as variáveis no navegador
-        
+        globalState.currentOxygen = 100;        
         console.log(globalState.highScore1,globalState.highScore2,globalState.highScore3,globalState.highScore4,globalState.highScore5);
         this.game.state.start('gameover');
     }

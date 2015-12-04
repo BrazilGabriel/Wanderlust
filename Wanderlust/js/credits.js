@@ -72,6 +72,11 @@ var creditsState = {
             this.game.time.events.add(2000, this.changeStatus, this);
         }
         
+        this.title.generateTexture;
+        this.sub.generateTexture;
+        this.text.generateTexture;
+        this.text2.generateTexture;
+        
     },
     
     update: function(){ 
@@ -100,12 +105,6 @@ var creditsState = {
         else if(this.status==1){
             this.velocity=0;
         }
-        
-        
-        this.title.generateTexture;
-        this.sub.generateTexture;
-        this.text.generateTexture;
-        this.text2.generateTexture;
         
         this.title.body.velocity.setTo(0, this.velocity);
         this.sub.body.velocity.setTo(0, this.velocity);
