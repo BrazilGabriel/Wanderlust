@@ -8,7 +8,8 @@ var introState = {
     // preload: carregar todos os assets necessários para esta scene ou para as próximas
     preload: function(){
         
-        this.game.load.spritesheet('logo', 'assets/sprites/logo.png', 363, 183, 9);
+        //this.game.load.spritesheet('logo', 'assets/sprites/logo.png', 363, 183, 9);
+        this.game.load.spritesheet('logo', 'assets/sprites/logo.png', 499,96,3);
         this.game.load.spritesheet('back', 'assets/sprites/bg.png', 800, 600, 4);
         this.game.load.spritesheet('ship', 'assets/sprites/spaceship.png', 298, 105, 2);
         this.game.load.spritesheet('buttonplay', 'assets/sprites/buttonplay.png', 200, 60, 2);
@@ -32,14 +33,15 @@ var introState = {
         this.ship.animations.add('on', [0,1], 10);
         this.ship.anchor.setTo(0.5, 0.5);
         this.ship.scale.setTo(1.5,1.5);
-               
-    
+                       
         //adicionando o logo na tela
         this.logo = this.game.add.sprite(400, 150, 'logo', 0);
         this.logo.anchor.setTo(0.5, 0.5);
-        this.logo.animations.add('play', [0,1,2,3,4,5,6,7,8,], 10);        
+        this.logo.animations.add('play', [0,1,2,2,1,0], 7);        
+        //this.logo.animations.add('play', [0,1,2,3,4,5,6,7,8,], 10);        
         //loop da animação
-        this.game.time.events.loop(4000, this.logoPlay, this);
+        this.game.time.events.loop(3500, this.logoPlay, this);
+       // this.game.time.events.loop(4000, this.logoPlay, this);
        
         //adicionando os botões
         this.buttonplay = this.game.add.sprite(660,340, 'buttonplay', 0);
