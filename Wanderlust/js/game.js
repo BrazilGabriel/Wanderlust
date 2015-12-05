@@ -11,6 +11,7 @@ var gameState = {
         
         this.game.load.image('asteroid', 'assets/sprites/asteroid.png');
         this.game.load.image('border','assets/sprites/scanlines.png');
+        this.game.load.image('arrow', 'assets/sprites/seta.png');
         
         this.game.load.spritesheet('alien', 'assets/sprites/alien1.png',70,50, 4);
         this.game.load.spritesheet('alien2', 'assets/sprites/alien2.png',45.25,50, 4);
@@ -36,6 +37,7 @@ var gameState = {
         this.capsule = this.game.add.sprite(game.rnd.integerInRange(0, 750), game.rnd.integerInRange(0, 570), 'capsule'); 
         this.capsule.animations.add('on',[0,1,2,3,0,0,0,0,0,0,0,0], 8);
        
+        this.arrows = this.game.add.group();
         this.aliens = this.game.add.group();
         this.aliens.enableBody = true;
         this.aliens.physicsBodyType = Phaser.Physics.ARCADE;
@@ -62,7 +64,7 @@ var gameState = {
         this.keys = this.game.input.keyboard.createCursorKeys();
         
         //Chama a função que cria os meteoros
-        this.asteroidGenerator = this.game.time.events.loop(4000, this.lateralShoots, this);
+        this.arrowGenerator = this.game.time.events.loop(4000, this.arrowAppear, this);
         
         this.border = this.game.add.sprite(0,0,'border');
         
@@ -127,8 +129,7 @@ var gameState = {
         if (globalState.currentScore >= 1000) globalState.hardness = 2.5;
         if (globalState.currentScore >= 1500) globalState.hardness = 3;
         if (globalState.currentScore >= 2000) globalState.hardness = 4;        
-        
-        console.log('Oxygen:', globalState.currentOxygen);
+
         
         if (globalState.currentOxygen <= 0){
             this.groundCollision();
@@ -227,32 +228,66 @@ var gameState = {
         alien2.kill();
     },
     
+    arrowAppear: function(){
+        this.side = game.rnd.integerInRange(0, 3);
+        if (this.side == 0){         //top            
+            this.placeX = game.rnd.integerInRange(200, 600);
+            this.placeY = 0;
+            this.arrow = this.arrows.create(this.placeX, this.placeY, 'arrow');
+            this.arrow.angle += 90;
+            this.arrow.scale.setTo(0.10, 0.10); 
+        }     
+        else if (this.side == 1){         //right        
+            this.placeX = 800;
+            this.placeY = game.rnd.integerInRange(200, 400);
+            this.arrow = this.arrows.create(this.placeX, this.placeY, 'arrow');
+            this.arrow.angle += 180;   
+            this.arrow.scale.setTo(0.10, 0.10); 
+        }
+        else if (this.side == 2){         //bottom  
+            this.placeX = game.rnd.integerInRange(200, 600);
+            this.placeY = 600;
+            this.arrow = this.arrows.create(this.placeX, this.placeY, 'arrow');
+            this.arrow.angle -= 90;
+            this.arrow.scale.setTo(0.10, 0.10); 
+        }  
+        else if (this.side == 3){         //left          
+            this.placeX = 0;
+            this.placeY = game.rnd.integerInRange(200, 400);
+            this.arrow = this.arrows.create(this.placeX, this.placeY, 'arrow');
+            this.arrow.scale.setTo(0.10, 0.10); 
+        }
+        this.game.time.events.add(750, this.lateralShoots, this);
+    },
+    
     lateralShoots: function(){
+        this.timer = 0;
+        this.arrow.kill();
+        //this.arrow.kill();
         // Cria os tiros que vem pelas laterais da tela em direção ao jogador
-        var side = game.rnd.integerInRange(0, 3);
-        if (side == 0){         //top            
-            this.asteroid = this.game.add.sprite(game.rnd.integerInRange(200, 600), 0, 'asteroid');
+        if (this.side == 0){         //top            
+            this.asteroid = this.game.add.sprite(this.placeX, this.placeY, 'asteroid');
             this.asteroid.anchor.setTo(0.5, 0.5);
             this.game.physics.enable(this.asteroid);
             this.asteroid.angle = game.rnd.integerInRange(135, 225);            
             this.game.physics.arcade.velocityFromRotation(this.asteroid.rotation-Math.PI/2, game.rnd.integerInRange(150, 350), this.asteroid.body.velocity);
         }     
-        else if (side == 1){         //right            
-            this.asteroid = this.game.add.sprite(800, game.rnd.integerInRange(200, 400), 'asteroid');
+        else if (this.side == 1){         //right            
+            this.asteroid = this.game.add.sprite(this.placeX, this.placeY, 'asteroid');
             this.asteroid.anchor.setTo(0.5, 0.5);
             this.game.physics.enable(this.asteroid);
             this.asteroid.angle = game.rnd.integerInRange(225, 315);            
             this.game.physics.arcade.velocityFromRotation(this.asteroid.rotation-Math.PI/2, game.rnd.integerInRange(150, 350), this.asteroid.body.velocity);
         }
-        else if (side == 2){         //bottom            
-            this.asteroid = this.game.add.sprite(game.rnd.integerInRange(200, 600), 600, 'asteroid');
+        else if (this.side == 2){         //bottom            
+            this.asteroid = this.game.add.sprite(this.placeX, this.placeY, 'asteroid');
             this.asteroid.anchor.setTo(0.5, 0.5);
             this.game.physics.enable(this.asteroid);
             this.asteroid.angle = game.rnd.integerInRange(0, 45) + game.rnd.integerInRange(0, 45);            
             this.game.physics.arcade.velocityFromRotation(this.asteroid.rotation-Math.PI/2, game.rnd.integerInRange(150, 350), this.asteroid.body.velocity);
         }  
-        else if (side == 3){         //left            
-            this.asteroid = this.game.add.sprite(0, game.rnd.integerInRange(200, 400), 'asteroid');
+        else if (this.side == 3){         //left            
+            this.asteroid = this.game.add.sprite(this.placeX, this.placeY, 'asteroid');
             this.asteroid.anchor.setTo(0.5, 0.5);
             this.game.physics.enable(this.asteroid);
             this.asteroid.angle = game.rnd.integerInRange(45, 135);            
