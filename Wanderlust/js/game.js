@@ -9,7 +9,7 @@ var gameState = {
 
         this.game.load.bitmapFont('fipps','assets/fonts/fipps/fipps.png','assets/fonts/fipps/fipps.fnt');
         
-        this.game.load.image('asteroid', 'assets/sprites/asteroid.png');
+        //this.game.load.image('asteroid', 'assets/sprites/asteroid.png');
         this.game.load.image('border','assets/sprites/scanlines.png');
         this.game.load.image('arrow', 'assets/sprites/seta.png');
         
@@ -19,6 +19,9 @@ var gameState = {
         this.game.load.spritesheet('player', 'assets/sprites/player.png', 25, 46, 16);
         this.game.load.spritesheet('back', 'assets/sprites/bg.png', 800, 600, 4);
         this.game.load.spritesheet('capsule', 'assets/sprites/ox.png', 12, 25, 4);
+        this.game.load.spritesheet('asteroid', 'assets/sprites/asteroid.png', 50,53, 4);
+        this.game.load.spritesheet('asteroidc', 'assets/sprites/asteroidc.png', 85,42, 4);
+        
     
     },
 
@@ -71,20 +74,24 @@ var gameState = {
         
         this.score = this.game.add.bitmapText(30, 40, 'fipps', 'SCORE: ', 15);
         this.oxygen = this.game.add.bitmapText(590, 40, 'fipps', 'Oxygen: ', 15);
-        
+        this.asteroidcreate=false;
     },
 
     // update: o que fazer a cada quadro
     update: function() {
         
+        if(this.asteroidcreate){
+            this.asteroid.animations.play('move');
+        this.aliens.callAll('animations.play', 'animations', 'on');
+        if (this.player.overlap(this.asteroid)&&globalState.currentOxygen != 0)this.playerKill();
+        }
+        
         this.capsule.animations.play('on');
         
         //animando o fundo
         this.back.animations.play('on');
-        this.aliens.callAll('animations.play', 'animations', 'on');
-        
         // Adicionalmente, a função this.playerKill() é chamada no evento da colisão
-        this.game.physics.arcade.collide(this.player, this.asteroid, this.playerKill, null, this);
+       // this.game.physics.arcade.collide(this.player, this.asteroid, this.playerKill, null, this);
         this.game.physics.arcade.collide(this.player, this.aliens, this.playerKill, null, this);
         this.game.physics.arcade.collide(this.player, this.capsule, this.oxygenCapsule, null, this);   
         this.game.physics.arcade.collide(this.aliens, this.aliens, this.alienCollision, null, this);
@@ -265,33 +272,35 @@ var gameState = {
         //this.arrow.kill();
         // Cria os tiros que vem pelas laterais da tela em direção ao jogador
         if (this.side == 0){         //top            
-            this.asteroid = this.game.add.sprite(this.placeX, this.placeY, 'asteroid');
-            this.asteroid.anchor.setTo(0.5, 0.5);
-            this.game.physics.enable(this.asteroid);
-            this.asteroid.angle = game.rnd.integerInRange(135, 225);            
-            this.game.physics.arcade.velocityFromRotation(this.asteroid.rotation-Math.PI/2, game.rnd.integerInRange(150, 350), this.asteroid.body.velocity);
-        }     
-        else if (this.side == 1){         //right            
-            this.asteroid = this.game.add.sprite(this.placeX, this.placeY, 'asteroid');
-            this.asteroid.anchor.setTo(0.5, 0.5);
-            this.game.physics.enable(this.asteroid);
-            this.asteroid.angle = game.rnd.integerInRange(225, 315);            
-            this.game.physics.arcade.velocityFromRotation(this.asteroid.rotation-Math.PI/2, game.rnd.integerInRange(150, 350), this.asteroid.body.velocity);
-        }
-        else if (this.side == 2){         //bottom            
-            this.asteroid = this.game.add.sprite(this.placeX, this.placeY, 'asteroid');
-            this.asteroid.anchor.setTo(0.5, 0.5);
-            this.game.physics.enable(this.asteroid);
-            this.asteroid.angle = game.rnd.integerInRange(0, 45) + game.rnd.integerInRange(0, 45);            
-            this.game.physics.arcade.velocityFromRotation(this.asteroid.rotation-Math.PI/2, game.rnd.integerInRange(150, 350), this.asteroid.body.velocity);
-        }  
-        else if (this.side == 3){         //left            
-            this.asteroid = this.game.add.sprite(this.placeX, this.placeY, 'asteroid');
-            this.asteroid.anchor.setTo(0.5, 0.5);
+            this.asteroid = this.game.add.sprite(this.placeX, this.placeY, 'asteroidc',0);
+            this.asteroid.anchor.setTo(0.85, 0.5);
             this.game.physics.enable(this.asteroid);
             this.asteroid.angle = game.rnd.integerInRange(45, 135);            
-            this.game.physics.arcade.velocityFromRotation(this.asteroid.rotation-Math.PI/2, game.rnd.integerInRange(150, 350), this.asteroid.body.velocity);
+            this.game.physics.arcade.velocityFromRotation(this.asteroid.rotation, game.rnd.integerInRange(150, 350), this.asteroid.body.velocity);
+        }     
+        else if (this.side == 1){         //right            
+            this.asteroid = this.game.add.sprite(this.placeX, this.placeY, 'asteroidc',0);
+            this.asteroid.anchor.setTo(0.85, 0.5);
+            this.game.physics.enable(this.asteroid);
+            this.asteroid.angle = game.rnd.integerInRange(135, 225);            
+            this.game.physics.arcade.velocityFromRotation(this.asteroid.rotation, game.rnd.integerInRange(150, 350), this.asteroid.body.velocity);
         }
+        else if (this.side == 2){         //bottom            
+            this.asteroid = this.game.add.sprite(this.placeX, this.placeY, 'asteroidc',0);
+            this.asteroid.anchor.setTo(0.85, 0.5);
+            this.game.physics.enable(this.asteroid);
+            this.asteroid.angle = game.rnd.integerInRange(225, 315);         
+            this.game.physics.arcade.velocityFromRotation(this.asteroid.rotation, game.rnd.integerInRange(150, 350), this.asteroid.body.velocity);
+        }  
+        else if (this.side == 3){         //left            
+            this.asteroid = this.game.add.sprite(this.placeX, this.placeY, 'asteroidc',0);
+            this.asteroid.anchor.setTo(0.85, 0.5);
+            this.game.physics.enable(this.asteroid);
+            this.asteroid.angle = game.rnd.integerInRange(0,45) + game.rnd.integerInRange(0,45);            
+            this.game.physics.arcade.velocityFromRotation(this.asteroid.rotation, game.rnd.integerInRange(150, 350), this.asteroid.body.velocity);
+        }
+        this.asteroid.animations.add('move',[0,1,2,3], 6);
+        this.asteroidcreate=true;
     },
     
     playerKill : function(){    
