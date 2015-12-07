@@ -15,7 +15,8 @@ var gameState = {
         
         this.game.load.spritesheet('alien', 'assets/sprites/alien1.png',70,50, 4);
         this.game.load.spritesheet('alien2', 'assets/sprites/alien2.png',45.25,50, 4);
-        this.game.load.spritesheet('player', 'assets/sprites/player.png', 34, 50, 7);
+        this.game.load.spritesheet('explosion', 'assets/sprites/explosion.png', 34, 44, 7);
+        this.game.load.spritesheet('player', 'assets/sprites/player.png', 25, 46, 16);
         this.game.load.spritesheet('back', 'assets/sprites/bg.png', 800, 600, 4);
         this.game.load.spritesheet('capsule', 'assets/sprites/ox.png', 12, 25, 4);
     
@@ -42,9 +43,9 @@ var gameState = {
         this.aliens.enableBody = true;
         this.aliens.physicsBodyType = Phaser.Physics.ARCADE;
         
-        this.player = this.game.add.sprite(400, 500, 'player', 4);
+        this.player = this.game.add.sprite(400, 500, 'player', 10);
         this.player.anchor.setTo(0.5, 0.5);
-        this.player.scale.setTo(0.75,0.75);
+        //this.player.scale.setTo(0.75,0.75);
         
         // Adicionando física ao objeto
         this.game.physics.enable(this.player);
@@ -56,10 +57,10 @@ var gameState = {
         
         // Adicionando animacoes
         // Parâmetros: nome da animação, sprites que compõem a animação, quadros por segundo
-        this.player.animations.add('walkl', [2], 6);
-        this.player.animations.add('walkr', [1], 6);
-        this.player.animations.add('idle', [5,4,6,4], 4);
-        this.player.animations.add('jump', [0], 6);
+        this.player.animations.add('walkl', [4,5,6], 10);
+        this.player.animations.add('walkr', [7,8,9], 10);
+        this.player.animations.add('line', [1,2,3], 10);
+        this.player.animations.add('lol', [12,13,14,15,14,13], 4);
         
         this.keys = this.game.input.keyboard.createCursorKeys();
         
@@ -82,9 +83,9 @@ var gameState = {
         this.back.animations.play('on');
         this.aliens.callAll('animations.play', 'animations', 'on');
         
-        // Adicionalmente, a função this.groundCollision() é chamada no evento da colisão
-        this.game.physics.arcade.collide(this.player, this.asteroid, this.groundCollision, null, this);
-        this.game.physics.arcade.collide(this.player, this.aliens, this.groundCollision, null, this);
+        // Adicionalmente, a função this.playerKill() é chamada no evento da colisão
+        this.game.physics.arcade.collide(this.player, this.asteroid, this.playerKill, null, this);
+        this.game.physics.arcade.collide(this.player, this.aliens, this.playerKill, null, this);
         this.game.physics.arcade.collide(this.player, this.capsule, this.oxygenCapsule, null, this);   
         this.game.physics.arcade.collide(this.aliens, this.aliens, this.alienCollision, null, this);
 
@@ -119,8 +120,7 @@ var gameState = {
                 alien.scale.setTo(-1,1);
             }
         }, this);
-        
-        globalState.currentOxygen-=0.05*globalState.hardness;
+        if(this.player.alive) globalState.currentOxygen-=0.05*globalState.hardness;
         
         if (globalState.currentScore >= 200) globalState.hardness = 1.25;
         if (globalState.currentScore >= 400) globalState.hardness = 1.5;
@@ -131,19 +131,19 @@ var gameState = {
         if (globalState.currentScore >= 2000) globalState.hardness = 4;        
 
         
-        if (globalState.currentOxygen <= 0){
-            this.groundCollision();
+        if (globalState.currentOxygen <= 0&&this.player.alive){
+            this.playerKill();
         }
         
         //se o player estiver parado;
         if (this.currentSpeed == 0){
-        //aciona o evento de animação idle se o jogador ficar sem se mover por um tempo...    
+        //aciona o evento de animação lol se o jogador ficar sem se mover por um tempo...    
             this.time.events.add(Phaser.Timer.SECOND * 2, this.lol, this);
         }
         if (this.currentSpeed != 0){
-            //se nao, para as animação idle
-            this.player.animations.stop('idle');
-            //movimentação do pleyer em função do ângulo (ÂNGULO EM RAD, VELOCIDADE, OBJETO A SER MOVIDO)
+            //se nao, para as animação lol
+            //this.player.animations.stop('lol');
+            //movimentação do player em função do ângulo (ÂNGULO EM RAD, VELOCIDADE, OBJETO A SER MOVIDO)
             this.game.physics.arcade.velocityFromRotation(this.player.rotation-Math.PI/2, this.currentSpeed, this.player.body.velocity);
             //acionar o resto das animações    
             if(this.keys.left.isDown){
@@ -153,11 +153,10 @@ var gameState = {
                 this.player.animations.play('walkr'); // Executar animação 'walkr'
             }
             else if(this.keys.up.isDown){
-                this.player.animations.play('jump'); // Executar animação 'jump'
+                this.player.animations.play('line'); // Executar animação 'jump'
             }
             else{
-                this.player.animations.stop();
-                this.player.frame = 3;
+                this.player.frame = 0;
             }
         }   
         
@@ -172,9 +171,9 @@ var gameState = {
      },
     
     lol: function(){
-        //após o termino do tempo, verificar se ainda está parado.Em caso positivo, acionar idle;
+        //após o termino do tempo, verificar se ainda está parado.Em caso positivo, acionar lol;
         if (this.currentSpeed == 0){
-            this.player.animations.play('idle');
+            this.player.animations.play('lol');
         }
     },
     
@@ -295,8 +294,22 @@ var gameState = {
         }
     },
     
-    groundCollision : function(){       
+    playerKill : function(){    
+        this.player.kill()
+        globalState.currentOxygen = 0;  
+        globalState.hardness = 0;
+        this.explosion = this.game.add.sprite(this.player.x, this.player.y, 'explosion', 0);
+        this.explosion.anchor.setTo(0.5,0.5);
+        this.explosion.angle=this.player.angle;
+        this.explosion.animations.add('on',[0,1,2,3,4,5,6,],10);
+        this.explosion.animations.play('on');
+        this.game.time.events.add(800, this.endGame, this);
         
+        
+    },
+    
+    endGame : function(){       
+        //this.player.kill()
         globalState.hardness = 1;
         globalState.currentOxygen = 100;        
         console.log(globalState.highScore1,globalState.highScore2,globalState.highScore3,globalState.highScore4,globalState.highScore5);
