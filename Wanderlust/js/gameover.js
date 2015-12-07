@@ -184,7 +184,7 @@ var gameOverState = {
     },
     
     indexRight: function(){
-        if(this.indexw < 7 ){
+        if(this.indexw < 2 ){
             this.indexw += 1;
             this.index=0;
         }    

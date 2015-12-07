@@ -19,22 +19,20 @@ var gameState = {
         this.game.load.spritesheet('player', 'assets/sprites/player.png', 25, 46, 16);
         this.game.load.spritesheet('back', 'assets/sprites/bg.png', 800, 600, 4);
         this.game.load.spritesheet('capsule', 'assets/sprites/ox.png', 12, 25, 4);
-<<<<<<< HEAD
-        
+        this.game.load.spritesheet('asteroid', 'assets/sprites/asteroid.png', 50,53, 4);
+        this.game.load.spritesheet('asteroidc', 'assets/sprites/asteroidc.png', 85,42, 4);
+                        
         this.game.load.audio('theme', 'assets/songs/main-theme.ogg');
         this.game.load.audio('oxygen', 'assets/songs/oxygen.ogg');
         this.game.load.audio('crash', 'assets/songs/crash.ogg');
         this.game.load.audio('lowLife', 'assets/songs/lowlife.ogg');
-=======
-        this.game.load.spritesheet('asteroid', 'assets/sprites/asteroid.png', 50,53, 4);
-        this.game.load.spritesheet('asteroidc', 'assets/sprites/asteroidc.png', 85,42, 4);
         
->>>>>>> origin/master
     
     },
 
     // create: instanciar e inicializar todos os objetos dessa scene
     create: function() {
+        
         this.lowLife = true;
         
         this.lowLifeSong = this.game.add.audio('lowLife');
@@ -45,7 +43,7 @@ var gameState = {
                 
         //adicionando o fundo animado
         this.back = this.game.add.sprite(0,0,'back', 0);
-        this.back.animations.add('on', [0,1,2,3], 7);     
+        this.back.animations.add('on', [0,1,2,3], 7);
         
         // Inicializando sistema de física
         // o sistema Arcade é o mais simples de todos, mas também é o mais eficiente em termos de processamento.
@@ -94,17 +92,20 @@ var gameState = {
 
     // update: o que fazer a cada quadro
     update: function() {
-        
-<<<<<<< HEAD
+                
         if (globalState.currentOxygen <= 20 && this.lowLife){
             this.lowLifeSong.play();
             this.lowLife = false;
-=======
+        }
+
+	    if (globalState.currentOxygen >= 20){
+	       this.lowLife = true;
+        }
+        
         if(this.asteroidcreate){
             this.asteroid.animations.play('move');
         this.aliens.callAll('animations.play', 'animations', 'on');
         if (this.player.overlap(this.asteroid)&&globalState.currentOxygen != 0)this.playerKill();
->>>>>>> origin/master
         }
         
         this.capsule.animations.play('on');
@@ -325,7 +326,8 @@ var gameState = {
         this.asteroidcreate=true;
     },
     
-    playerKill : function(){    
+    playerKill : function(){
+        this.crash.play();
         this.player.kill()
         globalState.currentOxygen = 0;  
         globalState.hardness = 0;
@@ -336,15 +338,11 @@ var gameState = {
         this.explosion.animations.play('on');
         this.game.time.events.add(800, this.endGame, this);
         
-<<<<<<< HEAD
-        this.crash.play();
-=======
         
     },
     
     endGame : function(){       
         //this.player.kill()
->>>>>>> origin/master
         globalState.hardness = 1;
         globalState.currentOxygen = 100;        
         console.log(globalState.highScore1,globalState.highScore2,globalState.highScore3,globalState.highScore4,globalState.highScore5);
