@@ -10,7 +10,7 @@ var creditsState = {
         this.game.load.bitmapFont('fipps', 'assets/fonts/fipps/fipps.png', 'assets/fonts/fipps/fipps.fnt');
         this.game.load.bitmapFont('fippslight', 'assets/fonts/fipps/fippslight.png', 'assets/fonts/fipps/fippslight.fnt');
          
-        this.game.load.image('thanks', 'assets/sprites/thanks.png', 130,70);
+        this.game.load.image('thanks', 'assets/sprites/thanks.png', 260,121);
         this.game.load.image('uea', 'assets/sprites/uealogo.png', 122,122);
         this.game.load.image('border', 'assets/sprites/scanlines.png', 122,122);
         this.game.load.image('team', 'assets/sprites/igniters.png', 200, 112);
@@ -52,8 +52,8 @@ var creditsState = {
         this.subs.anchor.setTo(0.5,0);
         this.subs.align = 'center';
                 
-        this.thanks = this.game.add.sprite(400,1750, 'thanks');
-        this.thanks.scale.setTo(2,2);
+        this.thanks = this.game.add.sprite(400,1800, 'thanks');
+        this.thanks.scale.setTo(1.5,1.5);
         this.thanks.anchor.setTo(0.5,0.5)
 
         this.uea = this.game.add.sprite(200, 2050, 'uea');
