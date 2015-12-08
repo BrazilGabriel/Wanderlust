@@ -11,7 +11,7 @@ var introState = {
         //this.game.load.spritesheet('logo', 'assets/sprites/logo.png', 363, 183, 9);
         this.game.load.spritesheet('logo', 'assets/sprites/logo.png', 499,96,3);
         this.game.load.spritesheet('back', 'assets/sprites/bg.png', 800, 600, 4);
-        this.game.load.spritesheet('ship', 'assets/sprites/spaceship.png', 298, 105, 2);
+        this.game.load.spritesheet('menu', 'assets/sprites/menu.png', 800, 600, 3);
         this.game.load.spritesheet('buttonplay', 'assets/sprites/buttonplay.png', 200, 60, 2);
         
         this.game.load.image('hud','assets/sprites/scanlines.png');
@@ -25,22 +25,20 @@ var introState = {
         this.game.status = 0;
         
         //adicionando o fundo animado
-        this.back = this.game.add.sprite(0,0,'back', 0);
-        this.back.animations.add('on', [0,1,2,3], 6.5);
+      //  this.back = this.game.add.sprite(0,0,'back', 0);
+        //this.back.animations.add('on', [0,1,2,3], 6.5);
         
         //adicionando a nave na tela
-        this.ship = this.game.add.sprite(350,400,'ship', 0);
-        this.ship.animations.add('on', [0,1], 10);
-        this.ship.anchor.setTo(0.5, 0.5);
-        this.ship.scale.setTo(1.5,1.5);
+        this.menu = this.game.add.sprite(0,0,'menu', 0);
+        this.menu.animations.add('on', [0,1,2], 6);
                        
         //adicionando o logo na tela
-        this.logo = this.game.add.sprite(400, 150, 'logo', 0);
-        this.logo.anchor.setTo(0.5, 0.5);
-        this.logo.animations.add('play', [0,1,2,2,1,0], 7);        
+       // this.logo = this.game.add.sprite(400, 150, 'logo', 0);
+      //  this.logo.anchor.setTo(0.5, 0.5);
+      //  this.logo.animations.add('play', [0,1,2,2,1,0], 7);        
         //this.logo.animations.add('play', [0,1,2,3,4,5,6,7,8,], 10);        
         //loop da animação
-        this.game.time.events.loop(3500, this.logoPlay, this);
+      //  this.game.time.events.loop(3500, this.logoPlay, this);
        // this.game.time.events.loop(4000, this.logoPlay, this);
        
         //adicionando os botões
@@ -54,8 +52,8 @@ var introState = {
     // update: o que fazer a cada quadro
     update: function(){
         
-        this.back.animations.play('on');
-        this.ship.animations.play('on');
+        //this.back.animations.play('on');
+        this.menu.animations.play('on');
         
         // Verifica se a tecla ENTER foi pressionada, utilizando o objeto relacionado do game
         // Inicia o próximo state
@@ -112,8 +110,8 @@ var introState = {
         }
     },
     
-    logoPlay: function(){
-        this.logo.animations.play('play');
-    },
+    //logoPlay: function(){
+    //    this.logo.animations.play('play');
+    //},
     
 }
