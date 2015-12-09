@@ -21,13 +21,6 @@ var gameState = {
         this.game.load.spritesheet('capsule', 'assets/sprites/ox.png', 12, 25, 4);
         this.game.load.spritesheet('asteroid', 'assets/sprites/asteroid.png', 50,53, 4);
         this.game.load.spritesheet('asteroidc', 'assets/sprites/asteroidc.png', 85,42, 4);
-                        
-        this.game.load.audio('theme', 'assets/songs/main-theme.ogg');
-        this.game.load.audio('oxygen', 'assets/songs/oxygen.ogg');
-        this.game.load.audio('crash', 'assets/songs/crash.ogg');
-        this.game.load.audio('lowLife', 'assets/songs/lowlife.ogg');
-        
-    
     },
 
     // create: instanciar e inicializar todos os objetos dessa scene
@@ -38,8 +31,9 @@ var gameState = {
         this.lowLifeSong = this.game.add.audio('lowLife');
         this.crash = this.game.add.audio('crash');
         this.oxygenSong = this.game.add.audio('oxygen');
+        this.oxygenSong.volume = 0.5;
         this.music = this.game.add.audio('theme');
-        this.music.play();
+        this.music.play('', 1, 0.75, true);
                 
         //adicionando o fundo animado
         this.back = this.game.add.sprite(0,0,'back', 0);
@@ -343,6 +337,7 @@ var gameState = {
     
     endGame : function(){       
         //this.player.kill()
+        this.music.stop();
         globalState.hardness = 1;
         globalState.currentOxygen = 100;        
         console.log(globalState.highScore1,globalState.highScore2,globalState.highScore3,globalState.highScore4,globalState.highScore5);

@@ -8,6 +8,11 @@ var introState = {
     // preload: carregar todos os assets necessários para esta scene ou para as próximas
     preload: function(){
         
+        this.game.load.audio('oxygen', 'assets/songs/oxygen.ogg');
+        this.game.load.audio('crash', 'assets/songs/crash.ogg');
+        this.game.load.audio('lowLife', 'assets/songs/lowlife.ogg');
+        this.game.load.audio('theme', 'assets/songs/main-theme.ogg');
+        this.game.load.audio('menu', 'assets/songs/menu.ogg');
         //this.game.load.spritesheet('logo', 'assets/sprites/logo.png', 363, 183, 9);
         this.game.load.spritesheet('logo', 'assets/sprites/logo.png', 499,96,3);
         this.game.load.spritesheet('back', 'assets/sprites/bg.png', 800, 600, 4);
@@ -19,6 +24,8 @@ var introState = {
     
     // create: instanciar e inicializar todos os objetos dessa scene
     create: function(){
+        this.menuSong = this.game.add.audio('menu');
+        this.menuSong.play();
         globalState.initHighscore();
         
         //criando maquina de estado
@@ -59,6 +66,7 @@ var introState = {
         // Inicia o próximo state
         if(this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)&&this.game.status==0){
             this.game.state.start('game');
+            this.menuSong.volume = 0;;
         }
         
         if(this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)&&this.game.status==1){
