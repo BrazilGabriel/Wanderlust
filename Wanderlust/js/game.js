@@ -13,8 +13,8 @@ var gameState = {
         this.game.load.image('border','assets/sprites/scanlines.png');
         this.game.load.image('arrow', 'assets/sprites/seta.png');
         
-        this.game.load.spritesheet('alien', 'assets/sprites/alien1.png',70,50, 4);
-        this.game.load.spritesheet('alien2', 'assets/sprites/alien2.png',45.25,50, 4);
+        this.game.load.spritesheet('alien', 'assets/sprites/alien1.png',70, 50, 10);
+        this.game.load.spritesheet('alien2', 'assets/sprites/alien2.png',45, 50, 10);
         this.game.load.spritesheet('explosion', 'assets/sprites/explosion.png', 34, 44, 7);
         this.game.load.spritesheet('player', 'assets/sprites/player.png', 25, 46, 16);
         this.game.load.spritesheet('back', 'assets/sprites/bg.png', 800, 600, 4);
@@ -98,8 +98,7 @@ var gameState = {
         
         if(this.asteroidcreate){
             this.asteroid.animations.play('move');
-        this.aliens.callAll('animations.play', 'animations', 'on');
-        if (this.player.overlap(this.asteroid)&&globalState.currentOxygen != 0)this.playerKill();
+            if (this.player.overlap(this.asteroid)&&globalState.currentOxygen != 0)this.playerKill();
         }
         
         this.capsule.animations.play('on');
@@ -135,7 +134,13 @@ var gameState = {
             }
         }
         this.aliens.forEachAlive(function(alien) {
-            this.game.physics.arcade.accelerateToObject(alien, this.player, game.rnd.integerInRange(300, 800), game.rnd.integerInRange(80, 240), game.rnd.integerInRange(80, 240));
+            if(alien.frame==9) alien.kill();
+            if(alien.frame<4){
+                alien.animations.play('on');
+            }
+            else alien.animations.play('off');
+            if(alien.frame<4) this.game.physics.arcade.accelerateToObject(alien, this.player, game.rnd.integerInRange(300, 800), game.rnd.integerInRange(80, 240), game.rnd.integerInRange(80, 240));
+            else alien.body.velocity=0;
             if(alien.body.x>this.player.body.x){
                 alien.scale.setTo(1,1);
             }
@@ -224,6 +229,7 @@ var gameState = {
             this.alien = this.aliens.create(this.alienX, this.alienY, 'alien2');
         }
         this.aliens.callAll('animations.add', 'animations', 'on',[0,1,2,3,2,1], 6, true);
+        this.aliens.callAll('animations.add', 'animations', 'off',[4,5,6,7,8,9], 12, true);
         this.alien.body.collideWorldBounds = true;
         this.alien.anchor.setTo(0.5,0.5);
         this.game.physics.enable(this.capsule);
@@ -247,10 +253,16 @@ var gameState = {
     },
     
     alienCollision: function(alien1, alien2){
-        alien1.kill();
-        alien2.kill();
+        alien1.animations.play('off');
+        alien2.animations.play('off');
+
     },
     
+    killAlien: function(alien1, alien2){
+        alien1.kill();
+        alien2.kill();    
+    },
+
     arrowAppear: function(){
         this.side = game.rnd.integerInRange(0, 3);
         if (this.side == 0){         //top            
