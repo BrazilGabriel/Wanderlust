@@ -17,7 +17,8 @@ var introState = {
         this.game.load.spritesheet('logo', 'assets/sprites/logo.png', 499,96,3);
         this.game.load.spritesheet('back', 'assets/sprites/bg.png', 800, 600, 4);
         this.game.load.spritesheet('menu', 'assets/sprites/menu.png', 800, 600, 3);
-        this.game.load.spritesheet('buttonplay', 'assets/sprites/buttonplay.png', 200, 60, 2);
+       // this.game.load.spritesheet('buttonplay', 'assets/sprites/buttonplay.png', 200, 60, 2);
+        this.game.load.spritesheet('buttonplay', 'assets/sprites/button.png', 368, 94, 6);
         
         this.game.load.image('hud','assets/sprites/scanlines.png');
     },   
@@ -49,9 +50,16 @@ var introState = {
        // this.game.time.events.loop(4000, this.logoPlay, this);
        
         //adicionando os botões
-        this.buttonplay = this.game.add.sprite(660,340, 'buttonplay', 0);
-        this.buttonscore = this.game.add.sprite(640,420, 'buttonplay', 0);
-        this.buttoncredits = this.game.add.sprite(620,500, 'buttonplay', 1);
+        this.buttonplay = this.game.add.sprite(820,340, 'buttonplay', 0);
+        this.buttonplay.scale.setTo(0.5,0.5);
+        this.buttonplay.anchor.setTo(1,0);
+        
+        this.buttonscore = this.game.add.sprite(820,420, 'buttonplay', 2);
+        this.buttonscore.scale.setTo(0.5,0.5);
+        this.buttonscore.anchor.setTo(1,0);
+        this.buttoncredits = this.game.add.sprite(820,500, 'buttonplay', 4);
+        this.buttoncredits.scale.setTo(0.5,0.5);
+        this.buttoncredits.anchor.setTo(1,0);
         
         this.game.add.sprite(0,0,'hud');
     },
@@ -66,7 +74,7 @@ var introState = {
         // Inicia o próximo state
         if(this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)&&this.game.status==0){
             this.game.state.start('game');
-            this.menuSong.volume = 0;;
+            this.menuSong.volume = 0;
         }
         
         if(this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)&&this.game.status==1){
@@ -102,19 +110,21 @@ var introState = {
         //estado do botão play
         if(this.game.status == 0){
             this.buttonplay.frame=1;
-            this.buttonscore.frame=0;
-            this.buttoncredits.frame=0;
+            this.buttonscore.frame=2;
+            this.buttoncredits.frame=4;
             
         }
         else if(this.game.status == 1){
             this.buttonplay.frame=0;
-            this.buttonscore.frame=1;
-            this.buttoncredits.frame=0;
+            this.buttonscore.frame=3;
+            this.buttoncredits.frame=4;
+            
         }
         else{
             this.buttonplay.frame=0;
-            this.buttonscore.frame=0;
-            this.buttoncredits.frame=1;
+            this.buttonscore.frame=2;
+            this.buttoncredits.frame=5;
+
         }
     },
     
