@@ -34,7 +34,7 @@ var gameOverState = {
         this.dead = this.game.add.sprite(800,650,'dead');
         this.dead.anchor.setTo(1,1);
         
-        this.game.add.bitmapText(50,500,'fipps','Press enter to try again',15);
+        this.game.add.bitmapText(50,500,'fipps','Press enter to try again\n       or esc to menu',15);
         
         this.border = this.game.add.sprite(0,0,'border');
         

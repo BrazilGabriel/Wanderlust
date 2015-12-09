@@ -52,13 +52,13 @@ var creditsState = {
         this.subs.anchor.setTo(0.5,0);
         this.subs.align = 'center';
                 
-        this.thanks = this.game.add.sprite(400,1800, 'thanks');
+        this.thanks = this.game.add.sprite(400,1850, 'thanks');
         this.thanks.scale.setTo(1.5,1.5);
         this.thanks.anchor.setTo(0.5,0.5)
 
-        this.uea = this.game.add.sprite(200, 2050, 'uea');
+        this.uea = this.game.add.sprite(200, 2100, 'uea');
         this.uea.anchor.setTo(0.5,0.5);
-        this.igniters = this.game.add.sprite(600, 2050, 'team');
+        this.igniters = this.game.add.sprite(600, 2100, 'team');
         this.igniters.anchor.setTo(0.5,0.5);
         this.igniters.scale.setTo(1.3,1.3);
         
