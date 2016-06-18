@@ -36,11 +36,11 @@ var creditsState = {
         this.sub.anchor.setTo(0.5,0.5);
     
     
-        this.team = '\nDOUGLAS MATHEUS \n\n\nVIRGINIA OLIVEIRA \n\n\n\nGABRIEL ALONSO \n\n\n\nGABRIEL BRASIL \n\n\n\n\nBRUNO ARAUJO \n\nCRISTINA ARAUJO \n\nRAFAEL LIMA \n\n\n\n\n\n\n\n';
+        this.team = '\nHELOISA BATISTA \n\n\nTAINA LIMA \n\n\n\nGABRIEL ALONSO \n\n\n\nGABRIEL BRASIL \n\n\n\n\nADRIANO GIL  \n\n\n\n\n\n\n\n';
         
-        this.func = '\nConcept\nElements\n\nConcept\nCharacters \n\n\nPhysics \nSound Design \nProgression \n\nGame Designer\nAnimations\nGame UI\n \n\nProgramming\n\nGame Design\n\nConcept \nArt'   
+        this.func = '\nConcept\nElements\n\nConcept\nCharacters \n\n\nPhysics \nSound Design \nProgression \n\nGame Designer\nAnimations\nGame UI\n \n\nProgramming\n\n'   
         
-        this.class = 'Artists\n\n\n\n\n\n\n\nProgrammers\n\n\n\n\n\n\n\n\n\nGuiding Teachers';
+        this.class = 'Artists\n\n\n\n\n\n\n\nProgrammers\n\n\n\n\n\n\n\n\n\nGuiding Teacher';
     
         this.text = this.game.add.bitmapText(400, 625, 'fipps', this.team, 18);
         this.text.anchor.setTo(1,0);
@@ -84,7 +84,7 @@ var creditsState = {
         this.back.animations.play('on');
                 
         if(this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN)){
-            if((this.text.body.height+this.text.body.y)>=280){
+            if((this.text.body.height+this.text.body.y)>=310){
                 this.velocity=-300;
             }
             else{
@@ -99,7 +99,7 @@ var creditsState = {
                 this.velocity=0;
             }
         }
-        else if(this.status==1 &&(this.text.body.height+this.text.body.y>=280)){
+        else if(this.status==1 &&(this.text.body.height+this.text.body.y>=310)){
             this.velocity=-100;
         }
         else if(this.status==1){

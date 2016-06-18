@@ -73,14 +73,22 @@ var introState = {
         // Verifica se a tecla ENTER foi pressionada, utilizando o objeto relacionado do game
         // Inicia o próximo state
         if(this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)&&this.game.status==0){
+            this.menuSong.loop = false;
+            this.menuSong.stop();
+         //   this.menuSong.volume = 0;
             this.game.state.start('game');
-            this.menuSong.volume = 0;
         }
         
         if(this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)&&this.game.status==1){
+            this.menuSong.loop = false;
+            this.menuSong.stop();
+          //  this.menuSong.volume = 0;
             this.game.state.start('score');
         }
         if(this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)&&this.game.status==2){
+            this.menuSong.loop = false;
+            this.menuSong.stop();
+         //   this.menuSong.volume = 0;
             this.game.state.start('credits');
         }
         //movimentando a máquina de estado
